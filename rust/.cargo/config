@@ -1,0 +1,11 @@
+[target.aarch64-linux-android]
+ar = "/mnt/space/code/libs/ndk/arm64/bin/aarch64-linux-android-ar"
+linker = "/mnt/space/code/libs/ndk/arm64/bin/aarch64-linux-android-clang"
+
+[target.armv7-linux-androideabi]
+ar = "/mnt/space/code/libs/ndk/arm/bin/arm-linux-androideabi-ar"
+linker = "/mnt/space/code/libs/ndk/arm/bin/arm-linux-androideabi-clang"
+
+[target.i686-linux-android]
+ar = "/mnt/space/code/libs/ndk/x86/bin/i686-linux-android-ar"
+linker = "/mnt/space/code/libs/ndk/x86/bin/i686-linux-android-clang"
