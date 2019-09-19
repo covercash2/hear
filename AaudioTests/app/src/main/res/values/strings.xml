@@ -2,5 +2,8 @@
     <string name="app_name">AAudio Tests</string>
     <string name="tap_anywhere">TAP ANYWHERE</string>
     <string name="tone">Tone</string>
-    <string name="default_frequency">440.0 Hz</string>
+    <string name="default_frequency">440.0</string>
+    <string name="frequency_hint">frequency in Hertz</string>
+    <string name="frequency_unit">Hz</string>
+    <string name="oscillator_title">Oscillator</string>
 </resources>
