@@ -1,35 +1,33 @@
 package dev.covercash.aaudiotests
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import android.widget.SeekBar
-import android.widget.TextView
 import android.widget.ToggleButton
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AppCompatActivity
 import dev.covercash.aaudiotests.jni.NativeAudio
-import dev.covercash.aaudiotests.oscillator.OscillatorFragment
 import dev.covercash.aaudiotests.view.UnitSlider
-import kotlinx.android.synthetic.main.activity_main.*
+
+const val defaultFrequency = 440f // Hz
 
 class MainActivity : AppCompatActivity() {
 
     private val nativeAudio = NativeAudio()
 
+    private val frequency = defaultFrequency
+
     private fun setupOscillator() {
         findViewById<UnitSlider>(R.id.frequency_slider)!!.apply {
             onValueChangedListener = { newValue ->
+                Log.d("MainActivity", "value changed: $newValue")
                 nativeAudio.setFrequency(newValue)
             }
         }
     }
 
     private fun setupToneButton() {
-        findViewById<ToggleButton>(R.id.toneButton).apply {
+        findViewById<ToggleButton>(R.id.toneButton)!!.apply {
             setOnCheckedChangeListener { _, isChecked ->
+                Log.d("MainActivity", "checked: $isChecked")
                 nativeAudio.toggleTone(isChecked)
             }
         }

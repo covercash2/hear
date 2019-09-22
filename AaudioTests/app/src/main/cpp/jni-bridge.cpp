@@ -9,7 +9,7 @@ static AudioEngine *audioEngine = new AudioEngine();
 extern "C" {
 
 JNIEXPORT void JNICALL
-Java_dev_covercash_aaudiotests_jni_NativeAudio_setFrequency(
+Java_dev_covercash_aaudiotests_jni_NativeAudio_setFrequencyNative(
         JNIEnv *env,
         jobject obj,
         jfloat freq) {
@@ -17,7 +17,7 @@ Java_dev_covercash_aaudiotests_jni_NativeAudio_setFrequency(
 }
 
 JNIEXPORT void JNICALL
-Java_dev_covercash_aaudiotests_jni_NativeAudio_toggleTone(
+Java_dev_covercash_aaudiotests_jni_NativeAudio_toggleToneNative(
         JNIEnv *env,
         jobject obj,
         jboolean isOn) {
@@ -25,14 +25,14 @@ Java_dev_covercash_aaudiotests_jni_NativeAudio_toggleTone(
 }
 
 JNIEXPORT void JNICALL
-Java_dev_covercash_aaudiotests_jni_NativeAudio_startEngine(
+Java_dev_covercash_aaudiotests_jni_NativeAudio_startEngineNative(
         JNIEnv *env,
         jobject /* this */) {
     audioEngine->start();
 }
 
 JNIEXPORT void JNICALL
-Java_dev_covercash_aaudiotests_jni_NativeAudio_stopEngine(
+Java_dev_covercash_aaudiotests_jni_NativeAudio_stopEngineNative(
         JNIEnv *env,
         jobject /* this */) {
     audioEngine->stop();

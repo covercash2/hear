@@ -6,4 +6,5 @@
     <string name="frequency_hint">frequency in Hertz</string>
     <string name="frequency_unit">Hz</string>
     <string name="oscillator_title">Oscillator</string>
+    <string name="unit_default_title">unit</string>
 </resources>
