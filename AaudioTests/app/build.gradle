@@ -7,6 +7,9 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
     buildToolsVersion "29.0.2"
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "dev.covercash.aaudiotests"
         minSdkVersion 26

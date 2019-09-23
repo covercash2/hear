@@ -5,7 +5,7 @@ import android.util.Log
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
 import dev.covercash.aaudiotests.jni.NativeAudio
-import dev.covercash.aaudiotests.view.UnitSlider
+import dev.covercash.aaudiotests.view.unit_slider.UnitSlider
 
 const val defaultFrequency = 440f // Hz
 
@@ -13,13 +13,14 @@ class MainActivity : AppCompatActivity() {
 
     private val nativeAudio = NativeAudio()
 
-    private val frequency = defaultFrequency
-
     private fun setupOscillator() {
         findViewById<UnitSlider>(R.id.frequency_slider)!!.apply {
-            onValueChangedListener = { newValue ->
+            data.onValueChangedListener = { newValue ->
                 Log.d("MainActivity", "value changed: $newValue")
-                nativeAudio.setFrequency(newValue)
+                nativeAudio.setFrequency(newValue.toFloat() / 10f)
+            }
+            data.dataToString = {
+                it.toFloat().div(10f).toString()
             }
         }
     }

@@ -4,7 +4,7 @@
 #include <jni.h>
 #include <string>
 
-static AudioEngine *audioEngine = new AudioEngine();
+static auto audioEngine = new AudioEngine();
 
 extern "C" {
 

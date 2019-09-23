@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="UnitSlider">
+        <attr name="us_name" format="string" />
+        <attr name="us_unit" format="string" />
+        <attr name="us_default_value" format="integer" />
+        <attr name="us_max" format="integer" />
+        <attr name="us_min" format="integer" />
+    </declare-styleable>
+</resources>
