@@ -1,4 +1,4 @@
-package dev.covercash.aaudiotests.oscillator
+package dev.covercash.aaudiotests.audio.oscillator
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,7 +23,7 @@ class OscillatorFragment(val audioEngine: NativeAudio) : Fragment() {
                 val newFreq = seekBar?.progress
 
                 if (newFreq != null) {
-                    audioEngine.setFrequency(newFreq.toFloat())
+                    audioEngine.frequency = newFreq.toFloat()
                 }
 
             }

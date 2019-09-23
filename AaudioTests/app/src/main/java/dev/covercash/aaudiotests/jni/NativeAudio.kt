@@ -11,6 +11,11 @@ class NativeAudio {
     private external fun startEngineNative()
     private external fun stopEngineNative()
     private external fun setFrequencyNative(freq: Float)
+    private external fun getFrequencyNative(): Float
+
+    var frequency: Float
+        get() = getFrequencyNative()
+        set(value) = setFrequencyNative(value)
 
     fun toggleTone(isOn: Boolean) {
         Log.d(classTag, "toggleTone")
@@ -28,12 +33,6 @@ class NativeAudio {
         Log.d(classTag, "stopEngine")
 
         return stopEngineNative()
-    }
-
-    fun setFrequency(freq: Float) {
-        Log.d(classTag, "setFrequency($freq)")
-
-        return setFrequencyNative(freq)
     }
 
     companion object {

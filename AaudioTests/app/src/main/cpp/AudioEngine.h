@@ -14,6 +14,8 @@ public:
     void stop();
     void restart();
 
+    Oscillator* getOscillator();
+
     void setFrequency(float freq);
     void setToneOn(bool isToneOn);
 

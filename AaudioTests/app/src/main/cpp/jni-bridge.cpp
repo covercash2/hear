@@ -13,7 +13,15 @@ Java_dev_covercash_aaudiotests_jni_NativeAudio_setFrequencyNative(
         JNIEnv *env,
         jobject obj,
         jfloat freq) {
-    audioEngine->setFrequency(freq);
+    audioEngine->getOscillator()->setFrequency(freq);
+}
+
+JNIEXPORT void JNICALL
+Java_dev_covercash_aaudiotests_jni_NativeAudio_getFrequencyNative(
+        JNIEnv *env,
+        jobject obj,
+        jfloat freq) {
+    audioEngine->getOscillator()->getFrequency();
 }
 
 JNIEXPORT void JNICALL

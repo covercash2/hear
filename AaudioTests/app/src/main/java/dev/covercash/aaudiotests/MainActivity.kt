@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import dev.covercash.aaudiotests.audio.oscillator.OscillatorModel
 import dev.covercash.aaudiotests.jni.NativeAudio
 import dev.covercash.aaudiotests.view.unit_slider.UnitSlider
+import kotlinx.android.synthetic.main.activity_main.*
 
 const val defaultFrequency = 440f // Hz
 
@@ -14,12 +18,18 @@ class MainActivity : AppCompatActivity() {
     private val nativeAudio = NativeAudio()
 
     private fun setupOscillator() {
+
+        val model = ViewModelProviders.of(this)[OscillatorModel::class.java]
+        model.getFrequency().observe(this, Observer<Float> { frequency ->
+            frequency_slider.setValue(frequency.times(10f).toInt())
+        })
+
         findViewById<UnitSlider>(R.id.frequency_slider)!!.apply {
-            data.onValueChangedListener = { newValue ->
-                Log.d("MainActivity", "value changed: $newValue")
-                nativeAudio.setFrequency(newValue.toFloat() / 10f)
+            model.frequency.value = nativeAudio.frequency
+            onValueChangedListener = { newValue ->
+                nativeAudio.frequency = (newValue.toFloat() / 10f)
             }
-            data.dataToString = {
+            dataToString = {
                 it.toFloat().div(10f).toString()
             }
         }
@@ -39,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         nativeAudio.startEngine()
-
         setupOscillator()
         setupToneButton()
     }

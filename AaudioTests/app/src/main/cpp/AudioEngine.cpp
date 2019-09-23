@@ -96,3 +96,7 @@ void AudioEngine::setToneOn(bool isToneOn) {
 void AudioEngine::setFrequency(float freq) {
     oscillator_.setFrequency(freq);
 }
+
+Oscillator *AudioEngine::getOscillator() {
+    return &oscillator_;
+}

@@ -11,7 +11,12 @@
 #define FREQUENCY_A 440.0
 
 void Oscillator::setFrequency(float freq) {
+    frequency_ = freq;
     phaseIncrement_ = (TAO * freq) / (double) sampleRate_;
+}
+
+float Oscillator::getFrequency() {
+    return frequency_;
 }
 
 void Oscillator::setSampleRate(int32_t sampleRate) {
