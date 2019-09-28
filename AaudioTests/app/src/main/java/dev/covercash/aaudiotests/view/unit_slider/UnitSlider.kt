@@ -2,39 +2,57 @@ package dev.covercash.aaudiotests.view.unit_slider
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
-import androidx.core.content.res.getFloatOrThrow
-import androidx.core.content.res.getIntOrThrow
 import dev.covercash.aaudiotests.R
 import kotlinx.android.synthetic.main.unit_slider_view.view.*
 
-class UnitSlider(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
+const val SLIDER_MIN = 0
+const val SLIDER_MAX = 10000
+
+interface Range<D: Number> {
+    val min: D
+    val max: D
+    val increment: D
+    fun toSeekBarMaximum(): Int
+}
+
+data class FloatRange(
+    override val min: Float,
+    override val max: Float
+): Range<Float> {
+    override val increment = (max - min) / (SLIDER_MAX - SLIDER_MIN)
+
+    override fun toSeekBarMaximum(): Int =
+        ((max - min) / increment).toInt()
+}
+
+abstract class UnitSlider<D: Number>(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
     private val TAG = this.javaClass.simpleName
 
-    private val name: String
+    protected val name: String
     private val unit: String
+    protected val default: D
+    protected val min: D
+    protected val max: D
 
-    var onValueChangedListener: (Float) -> Unit = {
+    var onValueChangedListener: (D) -> Unit = {
         Log.d("UnitSlider", "value changed: $it")
     }
     var onFieldClick: () -> Unit = {
         Log.d(TAG, "field clicked")
     }
-    var dataToString: ((Float) -> String)? = null
-    var scaleData: (Int) -> Float = {
-        Log.d(TAG, "scale data linear")
-        it.toFloat()
-    }
 
-    var dataToInt: (Float) -> Int = { it.toInt() }
+    abstract val range: Range<D>
+    abstract fun progressToData(progress: Int): D
+    abstract fun dataToProgress(data: D): Int
+    abstract fun dataToString(data: D): String
+    abstract fun parseStyleAttributes(typedArray: TypedArray): Triple<D, D, D>
 
     init {
         val root = inflate(context, R.layout.unit_slider_view, this)
@@ -43,30 +61,28 @@ class UnitSlider(context: Context, attrs: AttributeSet) : LinearLayout(context, 
         try {
             name = typedArray.getString(R.styleable.UnitSlider_us_name) ?: ""
             unit = typedArray.getString(R.styleable.UnitSlider_us_unit) ?: ""
-            val data = typedArray.getFloatOrThrow(R.styleable.UnitSlider_us_default_value)
-            val min = typedArray.getFloatOrThrow(R.styleable.UnitSlider_us_min)
-            val max = typedArray.getFloatOrThrow(R.styleable.UnitSlider_us_max)
+
+            val (default, min, max) = this.parseStyleAttributes(typedArray)
+            this.default = default
+            this.min = min
+            this.max = max
 
             setTitle(root)
             setUnit(unit)
-            setupValueField(dataString(data))
-            setupSlider(dataToInt(min), dataToInt(max), dataToInt(data))
         } finally {
             typedArray.recycle()
         }
 
     }
 
-    fun setValue(position: Float) {
-        unit_field.setText(dataString(position), TextView.BufferType.EDITABLE)
+    protected fun setupViews(default: D, min: D, max: D) {
+        setupValueField(dataToString(default))
+        setupSlider(dataToProgress(min), dataToProgress(max), dataToProgress(default))
     }
 
-    private fun dataString(data: Float): String {
-        return if (dataToString == null) {
-            data.toString()
-        } else {
-            dataToString!!(data)
-        }
+    fun setValue(position: D) {
+        unit_field!!.setText(dataToString(position), TextView.BufferType.EDITABLE)
+        unit_seek_bar!!.setProgress(dataToProgress(position), true)
     }
 
     private fun setTitle(root: View) {
@@ -88,8 +104,10 @@ class UnitSlider(context: Context, attrs: AttributeSet) : LinearLayout(context, 
     private fun setupSlider(min: Int, max: Int, defaultValue: Int) {
         unit_seek_bar!!.let {
 
-            it.min = min * 10
-            it.max = max * 10
+            Log.d(TAG, "default: $defaultValue, min: $min, max: $max")
+
+            it.min = SLIDER_MIN
+            it.max = SLIDER_MAX
             it.setProgress(defaultValue, false)
 
             it.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -108,8 +126,8 @@ class UnitSlider(context: Context, attrs: AttributeSet) : LinearLayout(context, 
                 ) {
                     Log.d(TAG, "progress: $progress")
                     if (fromUser) {
-                        val scaledData = scaleData(progress)
-                        setValueText(dataString(scaledData))
+                        val scaledData = progressToData(progress)
+                        setValueText(dataToString(scaledData))
                         onValueChangedListener(scaledData)
                     }
                 }

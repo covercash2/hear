@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <dev.covercash.aaudiotests.view.unit_slider.UnitSlider
+    <dev.covercash.aaudiotests.audio.oscillator.FrequencySlider
         android:id="@+id/frequency_slider"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         app:us_name="frequency"
         app:us_unit="Hz" />
 
-    <dev.covercash.aaudiotests.view.unit_slider.UnitSlider
+    <dev.covercash.aaudiotests.audio.oscillator.FrequencySlider
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

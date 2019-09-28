@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
+import dev.covercash.aaudiotests.audio.oscillator.FrequencySlider
 import dev.covercash.aaudiotests.jni.NativeAudio
 import dev.covercash.aaudiotests.view.unit_slider.UnitDialog
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,8 +19,6 @@ class MainActivity : AppCompatActivity() {
     private val TAG = this.javaClass.simpleName
 
     private val nativeAudio = NativeAudio()
-
-    private val constA = 2f.pow(1f / 12f)
 
     private fun setupOscillator() {
         val validateFrequency: (Float) -> Result<Float> = {
@@ -51,15 +50,8 @@ class MainActivity : AppCompatActivity() {
                         nativeAudio.frequency = newValue
                     }
             }
-            dataToString = {
-                "%.1f".format(it)
-            }
-            scaleData = {
-                it.toFloat() / 10f
-            }
             onFieldClick = {
                 UnitDialog("frequency") { dialog, s ->
-
                     validateStringFrequency(s)
                         .onSuccess { f ->
                             nativeAudio.frequency = f
@@ -71,9 +63,6 @@ class MainActivity : AppCompatActivity() {
                         }
                 }
                     .show(supportFragmentManager, "Frequency Dialog")
-            }
-            dataToInt = {
-                (it * 10f).toInt()
             }
         }
     }
