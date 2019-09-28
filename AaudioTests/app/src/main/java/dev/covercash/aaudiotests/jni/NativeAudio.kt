@@ -14,8 +14,14 @@ class NativeAudio {
     private external fun getFrequencyNative(): Float
 
     var frequency: Float
-        get() = getFrequencyNative()
-        set(value) = setFrequencyNative(value)
+        get() {
+            Log.d(classTag, "get frequency")
+            return getFrequencyNative()
+        }
+        set(value) {
+            Log.d(classTag, "setting frequency: $value")
+            setFrequencyNative(value)
+        }
 
     fun toggleTone(isOn: Boolean) {
         Log.d(classTag, "toggleTone")

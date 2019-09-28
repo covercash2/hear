@@ -3,8 +3,8 @@
     <declare-styleable name="UnitSlider">
         <attr name="us_name" format="string" />
         <attr name="us_unit" format="string" />
-        <attr name="us_default_value" format="integer" />
-        <attr name="us_max" format="integer" />
-        <attr name="us_min" format="integer" />
+        <attr name="us_default_value" format="float" />
+        <attr name="us_min" format="float" />
+        <attr name="us_max" format="float" />
     </declare-styleable>
 </resources>

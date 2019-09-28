@@ -7,4 +7,6 @@
     <string name="frequency_unit">Hz</string>
     <string name="oscillator_title">Oscillator</string>
     <string name="unit_default_title">unit</string>
+    <string name="set">Set</string>
+    <string name="cancel">Cancel</string>
 </resources>

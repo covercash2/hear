@@ -10,19 +10,31 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.core.content.res.getFloatOrThrow
 import androidx.core.content.res.getIntOrThrow
 import dev.covercash.aaudiotests.R
 import kotlinx.android.synthetic.main.unit_slider_view.view.*
 
 class UnitSlider(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
+    private val TAG = this.javaClass.simpleName
+
     private val name: String
     private val unit: String
 
-    var onValueChangedListener: (Int) -> Unit = {
+    var onValueChangedListener: (Float) -> Unit = {
         Log.d("UnitSlider", "value changed: $it")
     }
-    var dataToString: ((Int) -> String)? = null
+    var onFieldClick: () -> Unit = {
+        Log.d(TAG, "field clicked")
+    }
+    var dataToString: ((Float) -> String)? = null
+    var scaleData: (Int) -> Float = {
+        Log.d(TAG, "scale data linear")
+        it.toFloat()
+    }
+
+    var dataToInt: (Float) -> Int = { it.toInt() }
 
     init {
         val root = inflate(context, R.layout.unit_slider_view, this)
@@ -31,26 +43,25 @@ class UnitSlider(context: Context, attrs: AttributeSet) : LinearLayout(context, 
         try {
             name = typedArray.getString(R.styleable.UnitSlider_us_name) ?: ""
             unit = typedArray.getString(R.styleable.UnitSlider_us_unit) ?: ""
-            val data = typedArray.getIntOrThrow(R.styleable.UnitSlider_us_default_value)
-            val min = typedArray.getIntOrThrow(R.styleable.UnitSlider_us_min)
-            val max = typedArray.getIntOrThrow(R.styleable.UnitSlider_us_max)
+            val data = typedArray.getFloatOrThrow(R.styleable.UnitSlider_us_default_value)
+            val min = typedArray.getFloatOrThrow(R.styleable.UnitSlider_us_min)
+            val max = typedArray.getFloatOrThrow(R.styleable.UnitSlider_us_max)
 
             setTitle(root)
             setUnit(unit)
-            setupValueField(root, dataString(data))
-            setupSlider(root, data, min, max)
+            setupValueField(dataString(data))
+            setupSlider(dataToInt(min), dataToInt(max), dataToInt(data))
         } finally {
             typedArray.recycle()
         }
 
     }
 
-    fun setValue(position: Int) {
-        setSliderPosition(position)
+    fun setValue(position: Float) {
         unit_field.setText(dataString(position), TextView.BufferType.EDITABLE)
     }
 
-    private fun dataString(data: Int): String {
+    private fun dataString(data: Float): String {
         return if (dataToString == null) {
             data.toString()
         } else {
@@ -70,27 +81,18 @@ class UnitSlider(context: Context, attrs: AttributeSet) : LinearLayout(context, 
         }
     }
 
-    private fun setSliderPosition(position: Int) {
-        findViewById<SeekBar>(R.id.unit_seek_bar)!!.apply {
-            Log.d("UnitSlider", "setting progress value $position")
-            setProgress(position, true)
-        }
-    }
-
     private fun setValueText(text: String) {
-        findViewById<TextView>(R.id.unit_field)!!.apply {
-            this.text = text
-        }
+        unit_field!!.setText(text, TextView.BufferType.EDITABLE)
     }
 
-    private fun setupSlider(root: View, defaultValue: Int, min: Int, max: Int) {
-        root.findViewById<SeekBar>(R.id.unit_seek_bar)!!.apply {
+    private fun setupSlider(min: Int, max: Int, defaultValue: Int) {
+        unit_seek_bar!!.let {
 
-            this.min = min
-            this.max = max
+            it.min = min * 10
+            it.max = max * 10
+            it.setProgress(defaultValue, false)
 
-            this.setProgress(defaultValue, false)
-            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            it.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {
                     // nothing?
                 }
@@ -104,44 +106,24 @@ class UnitSlider(context: Context, attrs: AttributeSet) : LinearLayout(context, 
                     progress: Int,
                     fromUser: Boolean
                 ) {
+                    Log.d(TAG, "progress: $progress")
                     if (fromUser) {
-                        setValueText(dataString(progress))
+                        val scaledData = scaleData(progress)
+                        setValueText(dataString(scaledData))
+                        onValueChangedListener(scaledData)
                     }
-                    onValueChangedListener(progress)
                 }
             })
         }
 
     }
 
-    private fun setupValueField(root: View, defaultValue: String) {
-        root.findViewById<TextView>(R.id.unit_field)!!.apply {
-            this.text = defaultValue
-            this.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    // nothing?
-                }
-
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                    // nothing?
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    Log.d("UnitSlider", "onTextChanged: $s")
-                    s?.let {
-                        it.filter(Char::isDigit)
-                            .toString()
-                            .toInt().let { intValue ->
-                                setSliderPosition(intValue)
-                            }
-                    }
-                }
-            })
+    private fun setupValueField(defaultValue: String) {
+        unit_field!!.apply {
+            text = defaultValue
+            setOnClickListener {
+                onFieldClick()
+            }
         }
     }
 

@@ -22,13 +22,27 @@
         android:id="@+id/frequency_slider"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:us_name="frequency"
-        app:us_unit="Hz"
-        app:us_default_value="440"
-        app:us_min="20"
-        app:us_max="11000"
+        android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:us_default_value="440"
+        app:us_min="16.35"
+        app:us_max="1902.13"
+        app:us_name="frequency"
+        app:us_unit="Hz" />
+
+    <dev.covercash.aaudiotests.view.unit_slider.UnitSlider
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frequency_slider"
+        app:us_default_value="0.3"
+        app:us_min="0.0"
+        app:us_max="1.0"
+        app:us_name="level"
+        app:us_unit="dB" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
