@@ -8,16 +8,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-
-    <ToggleButton
-        android:id="@+id/toneButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/tone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <dev.covercash.aaudiotests.audio.oscillator.FrequencySlider
         android:id="@+id/frequency_slider"
         android:layout_width="0dp"
@@ -44,5 +34,16 @@
         app:us_max="1.0"
         app:us_name="level"
         app:us_unit="dB" />
+
+    <dev.covercash.aaudiotests.view.button.PlayButton
+        android:id="@+id/tone_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        app:backgroundTint="#3e3e3e"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/play_pause_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

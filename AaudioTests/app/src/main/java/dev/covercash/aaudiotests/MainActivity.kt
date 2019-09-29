@@ -6,6 +6,7 @@ import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
 import dev.covercash.aaudiotests.audio.oscillator.FrequencySlider
 import dev.covercash.aaudiotests.jni.NativeAudio
+import dev.covercash.aaudiotests.view.button.PlayButton
 import dev.covercash.aaudiotests.view.unit_slider.UnitDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.Result.Companion.failure
@@ -68,10 +69,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupToneButton() {
-        findViewById<ToggleButton>(R.id.toneButton)!!.apply {
-            setOnCheckedChangeListener { _, isChecked ->
-                Log.d("MainActivity", "checked: $isChecked")
-                nativeAudio.toggleTone(isChecked)
+        tone_button!!.apply {
+            onClick =  { _, state ->
+                Log.d("MainActivity", "state: $state")
+                when (state) {
+                    PlayButton.State.PLAYING -> nativeAudio.toggleTone(true)
+                    PlayButton.State.STOPPED -> nativeAudio.toggleTone(false)
+                }
             }
         }
 
