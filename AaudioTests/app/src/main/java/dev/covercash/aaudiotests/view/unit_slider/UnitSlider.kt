@@ -32,12 +32,11 @@ data class FloatRange(
 }
 
 abstract class UnitSlider<D: Number>(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
-
     private val TAG = this.javaClass.simpleName
 
     protected val name: String
     private val unit: String
-    protected val default: D
+    val default: D
     protected val min: D
     protected val max: D
 
@@ -48,7 +47,10 @@ abstract class UnitSlider<D: Number>(context: Context, attrs: AttributeSet) : Li
         Log.d(TAG, "field clicked")
     }
 
-    abstract val range: Range<D>
+    val range: Range<D>
+
+    abstract fun setupRange(): Range<D>
+
     abstract fun progressToData(progress: Int): D
     abstract fun dataToProgress(data: D): Int
     abstract fun dataToString(data: D): String
@@ -67,8 +69,11 @@ abstract class UnitSlider<D: Number>(context: Context, attrs: AttributeSet) : Li
             this.min = min
             this.max = max
 
+            range = setupRange()
+
             setTitle(root)
             setUnit(unit)
+            setupViews(default, min, max)
         } finally {
             typedArray.recycle()
         }

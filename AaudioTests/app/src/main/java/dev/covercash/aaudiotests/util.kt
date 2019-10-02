@@ -14,3 +14,4 @@ inline fun <T: Any> T?.mapNull(fn: () -> T?): T? {
     if (this == null) fn()
     return this
 }
+

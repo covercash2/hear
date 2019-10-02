@@ -14,7 +14,7 @@ class UnitDialog(private val label: String, val onUnitSaved: (DialogFragment, St
     private fun setupViews() {
         unit_dialog_label!!.text = label
         cancel_button!!.setOnClickListener {
-            dialog.dismiss()
+            dialog!!.dismiss()
         }
         ok_button!!.setOnClickListener {
             onUnitSaved(this, unit_field!!.text.toString())

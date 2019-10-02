@@ -7,11 +7,14 @@ class NativeAudio {
 
     private val classTag = defaultTag(this.javaClass)
 
+    private external fun isPlayingNative(): Boolean
     private external fun toggleToneNative(isOn: Boolean)
     private external fun startEngineNative()
     private external fun stopEngineNative()
     private external fun setFrequencyNative(freq: Float)
     private external fun getFrequencyNative(): Float
+    private external fun setLevelNative(level: Float)
+    private external fun getLevelNative(): Float
 
     var frequency: Float
         get() {
@@ -23,31 +26,36 @@ class NativeAudio {
             setFrequencyNative(value)
         }
 
-    fun toggleTone(isOn: Boolean) {
-        Log.d(classTag, "toggleTone")
+    var level: Float
+        get() = getLevelNative()
+        set(value) = setLevelNative(value)
 
+    var playing: Boolean
+        get() = isPlayingNative()
+        set(value) {
+            toggleToneNative(value)
+        }
+
+    fun toggleTone(isOn: Boolean) {
         return toggleToneNative(isOn)
     }
 
     fun startEngine() {
-        Log.d(classTag, "startEngine")
-
         return startEngineNative()
     }
 
     fun stopEngine() {
-        Log.d(classTag, "stopEngine")
-
         return stopEngineNative()
     }
 
     companion object {
         init {
-            try {
-                System.loadLibrary("native-lib")
-            } catch (e: UnsatisfiedLinkError) {
-                Log.e("NativeAudio", "unable to load native lib", e)
-            }
+            System.loadLibrary("native-lib")
+//            try {
+//                System.loadLibrary("native-lib")
+//            } catch (e: UnsatisfiedLinkError) {
+//                Log.e("NativeAudio", "unable to load native lib", e)
+//            }
         }
     }
 }

@@ -1,30 +1,20 @@
-package dev.covercash.aaudiotests.audio.oscillator
+package dev.covercash.aaudiotests.view.unit_slider
 
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
-import android.util.Log
 import androidx.core.content.res.getFloatOrThrow
 import dev.covercash.aaudiotests.R
-import dev.covercash.aaudiotests.view.unit_slider.FloatRange
-import dev.covercash.aaudiotests.view.unit_slider.Range
-import dev.covercash.aaudiotests.view.unit_slider.UnitSlider
 
-class FrequencySlider(ctx: Context, attrs: AttributeSet) : UnitSlider<Float>(ctx, attrs) {
-    private val TAG = this.javaClass.simpleName
+class FloatSlider(ctx: Context, attrs: AttributeSet) : UnitSlider<Float>(ctx, attrs) {
 
-    override val range: Range<Float>
-
-    init {
-        range = FloatRange(min, max)
-        setupViews(default, min, max)
-    }
-
-    override fun progressToData(progress: Int): Float =
-        range.min + progress * range.increment
+    override fun setupRange(): Range<Float> = FloatRange(min, max)
 
     override fun dataToProgress(data: Float): Int =
         ((data - range.min) / range.increment).toInt()
+
+    override fun progressToData(progress: Int): Float =
+        range.min + progress * range.increment
 
     override fun dataToString(data: Float): String =
         "%.1f".format(data)

@@ -1,6 +1,8 @@
 package dev.covercash.aaudiotests
 
+import dev.covercash.aaudiotests.jni.NativeAudio
 import org.junit.Test
+import org.junit.Before
 
 import org.junit.Assert.*
 
@@ -10,8 +12,20 @@ import org.junit.Assert.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+
+    val nativeAudio: NativeAudio by lazy {
+        NativeAudio()
+    }
+
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
+    }
+
+    @Test
+    fun nativeAudioGettersAndSetters() {
+        val freq0 = nativeAudio.frequency
+
+        assertEquals(freq0, 440f)
     }
 }

@@ -9,6 +9,21 @@ static auto audioEngine = new AudioEngine();
 extern "C" {
 
 JNIEXPORT void JNICALL
+Java_dev_covercash_aaudiotests_jni_NativeAudio_setLevelNative(
+        JNIEnv *env,
+        jobject obj,
+        jfloat level) {
+    audioEngine->getOscillator()->setLevel(level);
+}
+
+JNIEXPORT float JNICALL
+Java_dev_covercash_aaudiotests_jni_NativeAudio_getLevelNative(
+        JNIEnv *env,
+        jobject obj) {
+    return audioEngine->getOscillator()->getLevel();
+}
+
+JNIEXPORT void JNICALL
 Java_dev_covercash_aaudiotests_jni_NativeAudio_setFrequencyNative(
         JNIEnv *env,
         jobject obj,
@@ -16,12 +31,12 @@ Java_dev_covercash_aaudiotests_jni_NativeAudio_setFrequencyNative(
     audioEngine->getOscillator()->setFrequency(freq);
 }
 
-JNIEXPORT void JNICALL
+JNIEXPORT float JNICALL
 Java_dev_covercash_aaudiotests_jni_NativeAudio_getFrequencyNative(
         JNIEnv *env,
         jobject obj,
         jfloat freq) {
-    audioEngine->getOscillator()->getFrequency();
+    return audioEngine->getOscillator()->getFrequency();
 }
 
 JNIEXPORT void JNICALL
@@ -31,6 +46,14 @@ Java_dev_covercash_aaudiotests_jni_NativeAudio_toggleToneNative(
         jboolean isOn) {
     audioEngine->setToneOn(isOn);
 }
+
+JNIEXPORT bool JNICALL
+Java_dev_covercash_aaudiotests_jni_NativeAudio_isPlayingNative(
+        JNIEnv *env,
+        jobject obj) {
+    return audioEngine->getOscillator()->isWaveOn();
+}
+
 
 JNIEXPORT void JNICALL
 Java_dev_covercash_aaudiotests_jni_NativeAudio_startEngineNative(

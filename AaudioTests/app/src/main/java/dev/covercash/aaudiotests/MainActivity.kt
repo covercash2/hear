@@ -2,16 +2,13 @@ package dev.covercash.aaudiotests
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
-import dev.covercash.aaudiotests.audio.oscillator.FrequencySlider
 import dev.covercash.aaudiotests.jni.NativeAudio
 import dev.covercash.aaudiotests.view.button.PlayButton
 import dev.covercash.aaudiotests.view.unit_slider.UnitDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.Result.Companion.failure
 import kotlin.Result.Companion.success
-import kotlin.math.pow
 
 const val FREQUENCY_MIN = 10.0f
 const val FREQUENCY_MAX = 20_000f
@@ -41,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         frequency_slider!!.apply {
+            setValue(nativeAudio.frequency)
             onValueChangedListener = { newValue ->
                 Log.d(TAG, "value changed: $newValue")
                 validateFrequency(newValue)
@@ -66,16 +64,21 @@ class MainActivity : AppCompatActivity() {
                     .show(supportFragmentManager, "Frequency Dialog")
             }
         }
+
+        level_slider!!.apply {
+            this.setValue(nativeAudio.level)
+            onValueChangedListener = { newValue ->
+                nativeAudio.level = newValue
+            }
+        }
+
     }
 
     private fun setupToneButton() {
         tone_button!!.apply {
-            onClick =  { _, state ->
-                Log.d("MainActivity", "state: $state")
-                when (state) {
-                    PlayButton.State.PLAYING -> nativeAudio.toggleTone(true)
-                    PlayButton.State.STOPPED -> nativeAudio.toggleTone(false)
-                }
+            playing = nativeAudio.playing
+            onClick =  { _, playing ->
+                nativeAudio.playing = playing
             }
         }
 
