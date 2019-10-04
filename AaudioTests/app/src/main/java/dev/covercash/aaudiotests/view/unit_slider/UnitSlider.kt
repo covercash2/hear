@@ -73,16 +73,16 @@ abstract class UnitSlider<D: Number>(context: Context, attrs: AttributeSet) : Li
 
             setTitle(root)
             setUnit(unit)
-            setupViews(default, min, max)
+            setupViews(default)
         } finally {
             typedArray.recycle()
         }
 
     }
 
-    protected fun setupViews(default: D, min: D, max: D) {
+    private fun setupViews(default: D) {
         setupValueField(dataToString(default))
-        setupSlider(dataToProgress(min), dataToProgress(max), dataToProgress(default))
+        setupSlider(dataToProgress(default))
     }
 
     fun setValue(position: D) {
@@ -106,11 +106,8 @@ abstract class UnitSlider<D: Number>(context: Context, attrs: AttributeSet) : Li
         unit_field!!.setText(text, TextView.BufferType.EDITABLE)
     }
 
-    private fun setupSlider(min: Int, max: Int, defaultValue: Int) {
+    private fun setupSlider(defaultValue: Int) {
         unit_seek_bar!!.let {
-
-            Log.d(TAG, "default: $defaultValue, min: $min, max: $max")
-
             it.min = SLIDER_MIN
             it.max = SLIDER_MAX
             it.setProgress(defaultValue, false)
@@ -129,7 +126,6 @@ abstract class UnitSlider<D: Number>(context: Context, attrs: AttributeSet) : Li
                     progress: Int,
                     fromUser: Boolean
                 ) {
-                    Log.d(TAG, "progress: $progress")
                     if (fromUser) {
                         val scaledData = progressToData(progress)
                         setValueText(dataToString(scaledData))

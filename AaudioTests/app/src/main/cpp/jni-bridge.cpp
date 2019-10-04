@@ -8,6 +8,31 @@ static auto audioEngine = new AudioEngine();
 
 extern "C" {
 
+JNIEXPORT float JNICALL
+Java_dev_covercash_aaudiotests_jni_NativeAudio_constFrequencyMin(
+        JNIEnv *env,
+        jobject obj) {
+    return FREQUENCY_MIN;
+}
+JNIEXPORT float JNICALL
+Java_dev_covercash_aaudiotests_jni_NativeAudio_constFrequencyMax(
+        JNIEnv *env,
+        jobject obj) {
+    return FREQUENCY_MAX;
+}
+JNIEXPORT float JNICALL
+Java_dev_covercash_aaudiotests_jni_NativeAudio_constLevelMin(
+        JNIEnv *env,
+        jobject obj) {
+    return LEVEL_MIN;
+}
+JNIEXPORT float JNICALL
+Java_dev_covercash_aaudiotests_jni_NativeAudio_constLevelMax(
+        JNIEnv *env,
+        jobject obj) {
+    return LEVEL_MAX;
+}
+
 JNIEXPORT void JNICALL
 Java_dev_covercash_aaudiotests_jni_NativeAudio_setLevelNative(
         JNIEnv *env,

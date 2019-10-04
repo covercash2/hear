@@ -3,15 +3,25 @@
 //
 
 #include "Oscillator.h"
-#include <math.h>
+#include <cmath>
 
-// 2 * pi
-#define TAO (3.14159 * 2)
-#define FREQUENCY_A 440.0
+constexpr float TAO = static_cast<const float>(M_PI * 2);
 
-void Oscillator::setFrequency(float freq) {
-    frequency_ = freq;
-    phaseIncrement_ = (TAO * freq) / (double) sampleRate_;
+float validate(const float v, const float min, const float max) {
+    if (v < min) {
+        return min;
+    }
+    if (v > max) {
+        return max;
+    }
+    return v;
+}
+
+void Oscillator::setFrequency(const float freq) {
+    float newFreq = validate(freq, FREQUENCY_MIN, FREQUENCY_MAX);
+
+    frequency_ = newFreq;
+    phaseIncrement_ = (TAO * newFreq) / (double) sampleRate_;
 }
 
 float Oscillator::getFrequency() {
@@ -19,7 +29,8 @@ float Oscillator::getFrequency() {
 }
 
 void Oscillator::setLevel(float level) {
-    level_ = level;
+    float newLevel = validate(level, LEVEL_MIN, LEVEL_MAX);
+    level_ = newLevel;
 }
 
 float Oscillator::getLevel() {
@@ -36,6 +47,10 @@ void Oscillator::setWaveOn(bool isWaveOn) {
 }
 
 bool Oscillator::isWaveOn() {
+    // FIXME i have no idea what memory order to use.
+    // it doesn't really matter since
+    // it should only be called serially from the
+    // android ui thread
     return isWaveOn_.load(std::memory_order_relaxed);
 }
 

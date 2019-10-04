@@ -16,13 +16,21 @@ class NativeAudio {
     private external fun setLevelNative(level: Float)
     private external fun getLevelNative(): Float
 
+    private external fun constFrequencyMin(): Float
+    private external fun constFrequencyMax(): Float
+    private external fun constLevelMin(): Float
+    private external fun constLevelMax(): Float
+
+    val frequencyMin = constFrequencyMin()
+    val frequencyMax = constFrequencyMax()
+    val levelMin = constLevelMin()
+    val levelMax = constLevelMax()
+
     var frequency: Float
         get() {
-            Log.d(classTag, "get frequency")
             return getFrequencyNative()
         }
         set(value) {
-            Log.d(classTag, "setting frequency: $value")
             setFrequencyNative(value)
         }
 
@@ -36,10 +44,6 @@ class NativeAudio {
             toggleToneNative(value)
         }
 
-    fun toggleTone(isOn: Boolean) {
-        return toggleToneNative(isOn)
-    }
-
     fun startEngine() {
         return startEngineNative()
     }
@@ -51,11 +55,11 @@ class NativeAudio {
     companion object {
         init {
             System.loadLibrary("native-lib")
-//            try {
-//                System.loadLibrary("native-lib")
-//            } catch (e: UnsatisfiedLinkError) {
-//                Log.e("NativeAudio", "unable to load native lib", e)
-//            }
+            try {
+                System.loadLibrary("native-lib")
+            } catch (e: UnsatisfiedLinkError) {
+                Log.e("NativeAudio", "unable to load native lib", e)
+            }
         }
     }
 }

@@ -8,7 +8,11 @@
 #include <atomic>
 #include <stdint.h>
 
-#define FREQUENCY_A 440.0
+constexpr float FREQUENCY_A = 440.0;
+constexpr float FREQUENCY_MIN = 10.0;
+constexpr float FREQUENCY_MAX = 20000.0;
+constexpr float LEVEL_MIN = 0.0;
+constexpr float LEVEL_MAX = 1.0;
 
 class Oscillator {
 public:
