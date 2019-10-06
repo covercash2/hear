@@ -32,7 +32,6 @@ class NotePickerDialog(private val defaultNote: Note, val onSave: (Note) -> Unit
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val allNotes = generateAllNotes().toList().toTypedArray()
-        allNotes.forEach { println(it) }
         ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allNotes)
             .apply {
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

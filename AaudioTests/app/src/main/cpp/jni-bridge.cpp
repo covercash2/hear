@@ -72,6 +72,14 @@ Java_dev_covercash_aaudiotests_jni_NativeAudio_toggleToneNative(
     audioEngine->setToneOn(isOn);
 }
 
+JNIEXPORT void JNICALL
+Java_dev_covercash_aaudiotests_jni_NativeAudio_setWaveShapeNative(
+        JNIEnv *env,
+        jobject obj,
+        jint waveIndex) {
+    audioEngine->getOscillator()->setWaveShape(WaveShape(waveIndex));
+}
+
 JNIEXPORT bool JNICALL
 Java_dev_covercash_aaudiotests_jni_NativeAudio_isPlayingNative(
         JNIEnv *env,

@@ -18,13 +18,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Spinner
+        android:id="@+id/wave_shape_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_name" />
+
     <dev.covercash.aaudiotests.view.unit_slider.FloatSlider
         android:id="@+id/frequency_slider"
         android:layout_width="379dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/note_name"
+        app:layout_constraintTop_toBottomOf="@+id/wave_shape_spinner"
         app:us_default_value="440"
         app:us_max="1902.13"
         app:us_min="16.35"

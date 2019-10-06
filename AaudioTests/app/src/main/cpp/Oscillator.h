@@ -7,12 +7,30 @@
 
 #include <atomic>
 #include <stdint.h>
+#include <functional>
+#include <cmath>
 
 constexpr float FREQUENCY_A = 440.0;
 constexpr float FREQUENCY_MIN = 10.0;
 constexpr float FREQUENCY_MAX = 20000.0;
 constexpr float LEVEL_MIN = 0.0;
 constexpr float LEVEL_MAX = 1.0;
+
+constexpr float kPi = static_cast<const float>(M_PI);
+constexpr float kTao = kPi * 2;
+
+float calculateSawValue(double phase, float amplitude);
+float calculateSineValue(double phase, float amplitude);
+float calculateSquareValue(double phase, float amplitude);
+float calculateTriangleValue(double phase, float amplitude);
+
+// indexed for clarity
+enum WaveShape {
+    kSaw = 0,
+    kSine = 1,
+    kSquare = 2,
+    kTriangle = 3,
+};
 
 class Oscillator {
 public:
@@ -22,6 +40,7 @@ public:
     float getLevel();
     void setWaveOn(bool isWaveOn);
     bool isWaveOn();
+    void setWaveShape(WaveShape shape);
     void setSampleRate(int32_t sampleRate);
     void render(float *audioData, int32_t numFrames);
 
@@ -33,7 +52,9 @@ private:
     float level_ = 0.0;
 
     double phase_ = 0.0;
-    double phaseIncrement_ = 0.0;
+    double phase_increment_ = 0.0;
+
+    std::function<float(double,float)> wave_function_ = calculateSineValue;
 };
 
 

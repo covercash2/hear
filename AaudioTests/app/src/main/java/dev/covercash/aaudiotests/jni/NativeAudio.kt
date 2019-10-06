@@ -3,6 +3,14 @@ package dev.covercash.aaudiotests.jni
 import android.util.Log
 import dev.covercash.aaudiotests.defaultTag
 
+// 'i' represents an index in the corresponding C++ enum
+enum class WaveShape(val i: Int) {
+    SAW(0),
+    SINE(1),
+    SQUARE(2),
+    TRIANGLE(3),
+}
+
 class NativeAudio {
 
     private val classTag = defaultTag(this.javaClass)
@@ -15,6 +23,7 @@ class NativeAudio {
     private external fun getFrequencyNative(): Float
     private external fun setLevelNative(level: Float)
     private external fun getLevelNative(): Float
+    private external fun setWaveShapeNative(i: Int)
 
     private external fun constFrequencyMin(): Float
     private external fun constFrequencyMax(): Float
@@ -43,6 +52,10 @@ class NativeAudio {
         set(value) {
             toggleToneNative(value)
         }
+
+    fun setWaveShape(shape: WaveShape) {
+        setWaveShapeNative(shape.i)
+    }
 
     fun startEngine() {
         return startEngineNative()

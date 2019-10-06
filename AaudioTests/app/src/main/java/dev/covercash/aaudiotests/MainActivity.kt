@@ -2,11 +2,15 @@ package dev.covercash.aaudiotests
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import dev.covercash.aaudiotests.audio.oscillator.OscillatorModel
 import dev.covercash.aaudiotests.jni.NativeAudio
+import dev.covercash.aaudiotests.jni.WaveShape
 import dev.covercash.aaudiotests.view.NotePickerDialog
 import dev.covercash.aaudiotests.view.button.PlayButton
 import dev.covercash.aaudiotests.view.unit_slider.UnitDialog
@@ -17,22 +21,22 @@ import kotlin.Result.Companion.success
 class MainActivity : AppCompatActivity() {
     private val TAG = this.javaClass.simpleName
 
-    private val nativeAudio = NativeAudio()
-
     private fun setupOscillator() {
+        val model = ViewModelProviders.of(this).get(OscillatorModel::class.java)
+
         val validateFrequency: (Float) -> Float = {
             when {
-                it > nativeAudio.frequencyMax -> {
+                it > model.frequencyMax -> {
                     Log.w(TAG, "bad frequency provided",
                         IllegalArgumentException("frequency is greater than max")
                     )
-                    nativeAudio.frequencyMax
+                    model.frequencyMax
                 }
-                it < nativeAudio.frequencyMin -> {
+                it < model.frequencyMin -> {
                     Log.w(TAG, "bad frequency provided",
                         IllegalArgumentException("frequency is less than min")
                     )
-                    nativeAudio.frequencyMin
+                    model.frequencyMin
                 }
                 else -> it
             }
@@ -51,14 +55,12 @@ class MainActivity : AppCompatActivity() {
             setNoteName(note)
         }
 
-        val model = ViewModelProviders.of(this).get(OscillatorModel::class.java)
-
-        model.playing.observe(this, Observer<Boolean> {
+        model.observePlaying(this, Observer<Boolean> {
             Log.d(TAG, "observed to play boolean: $it")
             tone_button.playing = it
         })
 
-        model.frequency.observe(this, Observer<Float> { freq ->
+        model.observeFrequency(this, Observer { freq ->
             Log.d(TAG, "observed new frequency: $freq")
             frequency_slider.setValue(freq)
             setNoteName(freq)
@@ -66,13 +68,12 @@ class MainActivity : AppCompatActivity() {
 
         val setFrequency: (Float) -> Unit = {
             val newFreq = validateFrequency(it)
-            model.frequency.value = newFreq
-            nativeAudio.frequency = newFreq
+            model.setFrequency(newFreq)
         }
 
         note_name!!.apply {
             setOnClickListener {
-                NotePickerDialog(noteFromFrequency(nativeAudio.frequency)) { note ->
+                NotePickerDialog(noteFromFrequency(model.getFrequency())) { note ->
                     val freq = note.toFrequency().toFloat()
                     setFrequency(freq)
                 }
@@ -80,7 +81,32 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        wave_shape_spinner!!.apply {
+            val shapes = WaveShape.values()
+            ArrayAdapter(context, android.R.layout.simple_spinner_item, shapes)
+                .let {
+                    it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    adapter = it
+                }
+
+            this.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    model.setWaveShape(shapes[position])
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    Log.d(TAG, "wave shape spinner: nothing selected")
+                }
+            }
+        }
+
         frequency_slider!!.apply {
+            setValue(model.getFrequency())
             onValueChangedListener = { freq ->
                 setFrequency(freq)
             }
@@ -100,32 +126,31 @@ class MainActivity : AppCompatActivity() {
         }
 
         level_slider!!.apply {
-            onValueChangedListener = { newValue ->
-                nativeAudio.level = newValue
+            setValue(model.getLevel())
+            onValueChangedListener = { newLevel ->
+                model.setLevel(newLevel)
             }
         }
 
-    }
-
-    private fun setupToneButton() {
         tone_button!!.apply {
-            playing = nativeAudio.playing
+            playing = model.isPlaying()
             onClick = { _, playing ->
-                nativeAudio.playing = playing
+                model.setPlaying(playing)
             }
         }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        nativeAudio.startEngine()
+        NativeAudio().startEngine()
         setupOscillator()
-        setupToneButton()
     }
 
     override fun onDestroy() {
-        nativeAudio.stopEngine()
+        // TODO is this ok?
+        NativeAudio().stopEngine()
         super.onDestroy()
     }
 }
