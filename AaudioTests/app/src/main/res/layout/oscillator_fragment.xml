@@ -7,41 +7,50 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/oscillator_title"
+        android:id="@+id/note_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/oscillator_title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:layout_margin="16dp"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/frequency_text_view"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:id="@+id/wave_shape_spinner"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints="@string/frequency_hint"
-        android:inputType="numberDecimal"
-        android:text="@string/default_frequency"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/oscillator_title" />
-
-    <TextView
-        android:id="@+id/frequency_unit_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/frequency_unit"
-        app:layout_constraintStart_toEndOf="@+id/frequency_text_view"
-        app:layout_constraintTop_toTopOf="@+id/frequency_text_view" />
-
-    <SeekBar
-        android:id="@+id/frequencySelector"
-        android:layout_width="0dp"
-        android:layout_height="32dp"
-        android:max="1000"
-        android:min="20"
-        android:progress="440"
+        android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/frequency_unit_label"
-        app:layout_constraintTop_toBottomOf="@+id/oscillator_title" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_name" />
+
+    <dev.covercash.aaudiotests.view.unit_slider.FloatSlider
+        android:id="@+id/frequency_slider"
+        android:layout_width="379dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wave_shape_spinner"
+        app:us_default_value="440"
+        app:us_max="1902.13"
+        app:us_min="16.35"
+        app:us_name="frequency"
+        app:us_unit="Hz" />
+
+    <dev.covercash.aaudiotests.view.unit_slider.FloatSlider
+        android:id="@+id/level_slider"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frequency_slider"
+        app:us_default_value="0.3"
+        app:us_max="1.0"
+        app:us_min="0.0"
+        app:us_name="level"
+        app:us_unit="dB" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

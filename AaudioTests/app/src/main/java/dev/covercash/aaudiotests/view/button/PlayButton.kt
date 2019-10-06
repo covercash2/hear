@@ -16,7 +16,7 @@ class PlayButton : FloatingActionButton {
             isActivated = value
         }
 
-    var onClick: (View, Boolean) -> Unit = { _, _ -> false }
+    var onClick: (View, Boolean) -> Unit = { _, _ ->  }
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)

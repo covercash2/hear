@@ -4,16 +4,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import dev.covercash.aaudiotests.NativeAudioViewModel
 import dev.covercash.aaudiotests.jni.NativeAudio
 import dev.covercash.aaudiotests.jni.WaveShape
 
-class OscillatorModel : ViewModel() {
-    private val nativeAudio = NativeAudio()
-
+class OscillatorModel(engine: NativeAudio) : NativeAudioViewModel(engine) {
     val frequencyMin
-        get() = nativeAudio.frequencyMin
+        get() = engine.frequencyMin
     val frequencyMax
-        get() = nativeAudio.frequencyMax
+        get() = engine.frequencyMax
 
     private val playing: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
@@ -30,34 +29,34 @@ class OscillatorModel : ViewModel() {
     }
 
     fun setFrequency(freq: Float) {
-        nativeAudio.frequency = freq
+        engine.frequency = freq
         this.frequency.value = freq
     }
     fun getFrequency(): Float {
         // TODO return model value or native value?
-        return nativeAudio.frequency
+        return engine.frequency
     }
     fun observeFrequency(owner: LifecycleOwner, observer: Observer<Float>) =
         frequency.observe(owner, observer)
 
     fun setLevel(level: Float) {
-        nativeAudio.level = level
+        engine.level = level
         this.level.value = level
     }
-    fun getLevel(): Float = nativeAudio.level
+    fun getLevel(): Float = engine.level
     fun observeLevel(owner: LifecycleOwner, observer: Observer<Float>) =
         level.observe(owner, observer)
 
     fun setPlaying(playing: Boolean) {
-        nativeAudio.playing = playing
+        engine.playing = playing
         this.playing.value = playing
     }
-    fun isPlaying(): Boolean = nativeAudio.playing
+    fun isPlaying(): Boolean = engine.playing
     fun observePlaying(owner: LifecycleOwner, observer: Observer<Boolean>) =
         playing.observe(owner, observer)
 
     fun setWaveShape(shape: WaveShape) {
-        nativeAudio.setWaveShape(shape)
+        engine.setWaveShape(shape)
         this.waveShape.value = shape
     }
     fun getWaveShape(): WaveShape? =

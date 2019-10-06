@@ -2,67 +2,39 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/touchArea"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/note_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="TextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Spinner
-        android:id="@+id/wave_shape_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+    <FrameLayout
+        android:id="@+id/main_fragment_container"
+        android:layout_width="376dp"
+        android:layout_height="397dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/note_name" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <dev.covercash.aaudiotests.view.unit_slider.FloatSlider
-        android:id="@+id/frequency_slider"
-        android:layout_width="379dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wave_shape_spinner"
-        app:us_default_value="440"
-        app:us_max="1902.13"
-        app:us_min="16.35"
-        app:us_name="frequency"
-        app:us_unit="Hz" />
+    </FrameLayout>
 
-    <dev.covercash.aaudiotests.view.unit_slider.FloatSlider
-        android:id="@+id/level_slider"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frequency_slider"
-        app:us_default_value="0.3"
-        app:us_max="1.0"
-        app:us_min="0.0"
-        app:us_name="level"
-        app:us_unit="dB" />
+        app:menu="@menu/module_nav_items" />
 
     <dev.covercash.aaudiotests.view.button.PlayButton
-        android:id="@+id/tone_button"
+        android:id="@+id/play_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
         app:backgroundTint="#3e3e3e"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/play_pause_button" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

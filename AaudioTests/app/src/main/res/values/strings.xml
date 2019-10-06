@@ -9,4 +9,5 @@
     <string name="unit_default_title">unit</string>
     <string name="set">Set</string>
     <string name="cancel">Cancel</string>
+    <string name="menu_oscillator">Oscillator</string>
 </resources>
