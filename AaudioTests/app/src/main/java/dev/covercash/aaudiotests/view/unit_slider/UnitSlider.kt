@@ -110,7 +110,6 @@ abstract class UnitSlider<D: Number>(context: Context, attrs: AttributeSet) : Li
         unit_seek_bar!!.let {
             it.min = SLIDER_MIN
             it.max = SLIDER_MAX
-            it.setProgress(defaultValue, false)
 
             it.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {

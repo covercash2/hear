@@ -1,32 +1,19 @@
 package dev.covercash.aaudiotests
 
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
+import dev.covercash.aaudiotests.audio.AudioEngineModel
 import dev.covercash.aaudiotests.audio.oscillator.OscillatorFragment
-import dev.covercash.aaudiotests.audio.oscillator.OscillatorModel
-import dev.covercash.aaudiotests.audio.synth.SynthModel
 import dev.covercash.aaudiotests.jni.NativeAudio
-import dev.covercash.aaudiotests.jni.WaveShape
-import dev.covercash.aaudiotests.view.NotePickerDialog
-import dev.covercash.aaudiotests.view.button.PlayButton
-import dev.covercash.aaudiotests.view.unit_slider.UnitDialog
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.oscillator_fragment.*
-import kotlin.Result.Companion.failure
-import kotlin.Result.Companion.success
 
 class MainActivity : AppCompatActivity() {
     private val TAG = this.javaClass.simpleName
 
-    private val nativeAudio = NativeAudio()
+    private lateinit var model: AudioEngineModel
 
     private fun setMainFragment(fragment: Fragment) {
         supportFragmentManager
@@ -39,38 +26,49 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupOscillator() {
-        val oscillatorModel = ViewModelProviders
-            .of(this, NativeAudioViewModelFactory(nativeAudio))
-            .get(OscillatorModel::class.java)
         // add fragment
-        setMainFragment(OscillatorFragment(oscillatorModel))
+        setMainFragment(OscillatorFragment())
     }
 
-    private fun setupSynth() {
-        val synthModel = ViewModelProviders
-            .of(this, NativeAudioViewModelFactory(nativeAudio))
-            .get(SynthModel::class.java)
+    private fun setupSynth(model: AudioEngineModel) {
+
+        model.observePlaying(this, Observer { newValue ->
+            play_button.playing = newValue
+        })
 
         play_button!!.apply {
-            playing = synthModel.playing
+            playing = model.playing
             onClick = { _, newValue ->
-                synthModel.playing = newValue
+                model.playing = newValue
             }
         }
+    }
+
+    private fun setupFilter() {
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        nativeAudio.startEngine()
+
+        model = ViewModelProviders
+            .of(this)[AudioEngineModel::class.java]
+
+        model.startEngine()
+
         setupOscillator()
-        setupSynth()
+        setupSynth(model)
 
         bottom_nav.apply {
             setOnNavigationItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.action_oscillator -> {
                         setupOscillator()
+                        true
+                    }
+                    R.id.action_filter -> {
+                        setupFilter()
                         true
                     }
                     else -> false
@@ -80,7 +78,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        nativeAudio.stopEngine()
+        model.stopEngine()
         super.onDestroy()
     }
 }

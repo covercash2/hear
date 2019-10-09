@@ -34,26 +34,28 @@ enum WaveShape {
 
 class Oscillator {
 public:
-    void setFrequency(float freq);
+    Oscillator(float frequency, float level, WaveShape waveShape);
+
+    void setFrequency(float freq, int32_t sample_rate);
     float getFrequency();
     void setLevel(float freq);
     float getLevel();
     void setWaveOn(bool isWaveOn);
     bool isWaveOn();
     void setWaveShape(WaveShape shape);
-    void setSampleRate(int32_t sampleRate);
+    WaveShape getWaveShape();
     void render(float *audioData, int32_t numFrames);
 
 private:
     std::atomic<bool> isWaveOn_{false};
-    int32_t sampleRate_ = 441000;
 
-    float frequency_ = FREQUENCY_A;
+    float frequency_ = 0.0;
     float level_ = 0.0;
 
     double phase_ = 0.0;
     double phase_increment_ = 0.0;
 
+    WaveShape wave_shape_ = WaveShape(0);
     std::function<float(double,float)> wave_function_ = calculateSineValue;
 };
 

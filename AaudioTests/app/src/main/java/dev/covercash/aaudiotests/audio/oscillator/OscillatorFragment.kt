@@ -9,8 +9,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import dev.covercash.aaudiotests.Note
 import dev.covercash.aaudiotests.R
+import dev.covercash.aaudiotests.audio.AudioEngineModel
 import dev.covercash.aaudiotests.jni.WaveShape
 import dev.covercash.aaudiotests.noteFromFrequency
 import dev.covercash.aaudiotests.view.NotePickerDialog
@@ -18,20 +20,28 @@ import dev.covercash.aaudiotests.view.unit_slider.UnitDialog
 import kotlinx.android.synthetic.main.oscillator_fragment.*
 import kotlinx.android.synthetic.main.oscillator_fragment.view.*
 
-class OscillatorFragment(val model: OscillatorModel) : Fragment() {
+class OscillatorFragment : Fragment() {
     private val TAG = this.javaClass.simpleName
 
     private fun setUpViews(view: View) {
+        val model = activity?.run {
+            ViewModelProviders
+                .of(this)
+                .get(AudioEngineModel::class.java)
+        } ?: throw IllegalStateException("could not get activity for fragment")
+
         val validateFrequency: (Float) -> Float = {
             when {
                 it > model.frequencyMax -> {
-                    Log.w(TAG, "bad frequency provided",
+                    Log.w(
+                        TAG, "bad frequency provided",
                         IllegalArgumentException("frequency is greater than max")
                     )
                     model.frequencyMax
                 }
                 it < model.frequencyMin -> {
-                    Log.w(TAG, "bad frequency provided",
+                    Log.w(
+                        TAG, "bad frequency provided",
                         IllegalArgumentException("frequency is less than min")
                     )
                     model.frequencyMin
@@ -45,9 +55,11 @@ class OscillatorFragment(val model: OscillatorModel) : Fragment() {
                 else -> Result.success(validateFrequency(v))
             }
         }
+
         fun setNoteName(note: Note) {
             note_name!!.text = note.toString()
         }
+
         fun setNoteName(freq: Float) {
             val note = noteFromFrequency(freq)
             setNoteName(note)
@@ -71,7 +83,7 @@ class OscillatorFragment(val model: OscillatorModel) : Fragment() {
 
         val setFrequency: (Float) -> Unit = {
             val newFreq = validateFrequency(it)
-            model.setFrequency(newFreq)
+            model.frequency = newFreq
         }
 
         view.wave_shape_spinner!!.apply {
@@ -82,14 +94,14 @@ class OscillatorFragment(val model: OscillatorModel) : Fragment() {
                     adapter = it
                 }
 
-            this.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
                     view: View?,
                     position: Int,
                     id: Long
                 ) {
-                    model.setWaveShape(shapes[position])
+                    model.waveShape = shapes[position]
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -99,7 +111,8 @@ class OscillatorFragment(val model: OscillatorModel) : Fragment() {
         }
 
         view.frequency_slider!!.apply {
-            setValue(model.getFrequency())
+            model.frequency = this.default
+            setValue(model.frequency)
             onValueChangedListener = { freq ->
                 setFrequency(freq)
             }
@@ -119,16 +132,16 @@ class OscillatorFragment(val model: OscillatorModel) : Fragment() {
         }
 
         view.level_slider!!.apply {
-            setValue(model.getLevel())
+            setValue(model.level)
             onValueChangedListener = { newLevel ->
-                model.setLevel(newLevel)
+                model.level = newLevel
             }
         }
 
         view.note_name!!.apply {
-            text = noteFromFrequency(model.getFrequency()).toString()
+            text = noteFromFrequency(model.frequency).toString()
             setOnClickListener {
-                NotePickerDialog(noteFromFrequency(model.getFrequency())) { note ->
+                NotePickerDialog(noteFromFrequency(model.frequency)) { note ->
                     val freq = note.toFrequency().toFloat()
                     setFrequency(freq)
                 }

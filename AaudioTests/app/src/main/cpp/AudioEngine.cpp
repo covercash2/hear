@@ -16,7 +16,9 @@ dataCallback(
         void *audioData,
         int32_t numFrames) {
 
-    ((Oscillator *) (userData))->render(static_cast<float *>(audioData), numFrames);
+    auto engine = static_cast<AudioEngine *>(userData);
+
+    engine->getOscillator()->render(static_cast<float *>(audioData), numFrames);
 
     return AAUDIO_CALLBACK_RESULT_CONTINUE;
 }
@@ -33,13 +35,20 @@ void errorCallback(
     }
 }
 
+AudioEngine::AudioEngine(Oscillator *oscillator) {
+    oscillator_ = oscillator;
+}
+AudioEngine::~AudioEngine() {
+    delete oscillator_;
+}
+
 bool AudioEngine::start() {
     AAudioStreamBuilder *streamBuilder;
     AAudio_createStreamBuilder(&streamBuilder);
     AAudioStreamBuilder_setFormat(streamBuilder, AAUDIO_FORMAT_PCM_FLOAT);
     AAudioStreamBuilder_setChannelCount(streamBuilder, 1);
     AAudioStreamBuilder_setPerformanceMode(streamBuilder, AAUDIO_PERFORMANCE_MODE_LOW_LATENCY);
-    AAudioStreamBuilder_setDataCallback(streamBuilder, ::dataCallback, &oscillator_);
+    AAudioStreamBuilder_setDataCallback(streamBuilder, ::dataCallback, this);
     AAudioStreamBuilder_setErrorCallback(streamBuilder, ::errorCallback, this);
 
     // open the stream
@@ -52,8 +61,7 @@ bool AudioEngine::start() {
         return false;
     }
 
-    int32_t sampleRate = AAudioStream_getSampleRate(stream_);
-    oscillator_.setSampleRate(sampleRate);
+    sample_rate_ = AAudioStream_getSampleRate(stream_);
 
     AAudioStream_setBufferSizeInFrames(
             stream_,
@@ -90,13 +98,9 @@ void AudioEngine::stop() {
 }
 
 void AudioEngine::setToneOn(bool isToneOn) {
-    oscillator_.setWaveOn(isToneOn);
-}
-
-void AudioEngine::setFrequency(float freq) {
-    oscillator_.setFrequency(freq);
+    oscillator_->setWaveOn(isToneOn);
 }
 
 Oscillator *AudioEngine::getOscillator() {
-    return &oscillator_;
+    return oscillator_;
 }

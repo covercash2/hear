@@ -52,11 +52,21 @@ float validate(const float v, const float min, const float max) {
     return v;
 }
 
-void Oscillator::setFrequency(const float freq) {
+Oscillator::Oscillator(float freq, float level, WaveShape shape) {
+    frequency_ = freq;
+    level_ = level;
+    setWaveShape(shape);
+}
+
+void Oscillator::setFrequency(const float freq, const int32_t sample_rate) {
     float new_freq = validate(freq, FREQUENCY_MIN, FREQUENCY_MAX);
 
     frequency_ = new_freq;
-    phase_increment_ = (kTao * new_freq) / (double) sampleRate_;
+    phase_increment_ = (kTao * new_freq) / (double) sample_rate;
+}
+
+WaveShape Oscillator::getWaveShape() {
+    return wave_shape_;
 }
 
 float Oscillator::getFrequency() {
@@ -70,11 +80,6 @@ void Oscillator::setLevel(float level) {
 
 float Oscillator::getLevel() {
     return level_;
-}
-
-void Oscillator::setSampleRate(int32_t sampleRate) {
-    sampleRate_ = sampleRate;
-    setFrequency(FREQUENCY_A);
 }
 
 void Oscillator::setWaveOn(bool isWaveOn) {
@@ -123,3 +128,13 @@ void Oscillator::render(float *audioData, int32_t numFrames) {
         }
     }
 }
+
+ // Return RC low-pass filter output samples, given input samples,
+ // time interval dt, and time constant RC
+// function lowpass(real[0..n] input, real dt, real RC)
+//   var real[0..n] output
+//   var real α := dt / (RC + dt)
+//   output[0] := α * input[0]
+//   for i from 1 to n
+//       output[i] := α * input[i] + (1-α) * output[i-1]
+//   return output

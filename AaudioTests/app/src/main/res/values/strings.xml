@@ -10,4 +10,5 @@
     <string name="set">Set</string>
     <string name="cancel">Cancel</string>
     <string name="menu_oscillator">Oscillator</string>
+    <string name="menu_filter">Filter</string>
 </resources>

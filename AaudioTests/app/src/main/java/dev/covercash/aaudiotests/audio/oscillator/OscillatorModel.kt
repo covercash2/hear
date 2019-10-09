@@ -1,5 +1,6 @@
 package dev.covercash.aaudiotests.audio.oscillator
 
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -13,6 +14,10 @@ class OscillatorModel(engine: NativeAudio) : NativeAudioViewModel(engine) {
         get() = engine.frequencyMin
     val frequencyMax
         get() = engine.frequencyMax
+
+    init {
+        Log.d(this.javaClass.simpleName, "OscillatorModel initialized")
+    }
 
     private val playing: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
@@ -56,7 +61,7 @@ class OscillatorModel(engine: NativeAudio) : NativeAudioViewModel(engine) {
         playing.observe(owner, observer)
 
     fun setWaveShape(shape: WaveShape) {
-        engine.setWaveShape(shape)
+        engine.waveShape = shape
         this.waveShape.value = shape
     }
     fun getWaveShape(): WaveShape? =

@@ -4,7 +4,7 @@
 #include <jni.h>
 #include <string>
 
-static auto audioEngine = new AudioEngine();
+static auto audioEngine = new AudioEngine(new Oscillator(FREQUENCY_A, 0.0, WaveShape::kSine));
 
 extern "C" {
 
@@ -53,7 +53,7 @@ Java_dev_covercash_aaudiotests_jni_NativeAudio_setFrequencyNative(
         JNIEnv *env,
         jobject obj,
         jfloat freq) {
-    audioEngine->getOscillator()->setFrequency(freq);
+    audioEngine->getOscillator()->setFrequency(freq, audioEngine->sample_rate_);
 }
 
 JNIEXPORT float JNICALL
@@ -70,6 +70,14 @@ Java_dev_covercash_aaudiotests_jni_NativeAudio_toggleToneNative(
         jobject obj,
         jboolean isOn) {
     audioEngine->setToneOn(isOn);
+}
+
+JNIEXPORT int JNICALL
+Java_dev_covercash_aaudiotests_jni_NativeAudio_getWaveShapeNative(
+        JNIEnv *env,
+        jobject obj) {
+    WaveShape shape = audioEngine->getOscillator()->getWaveShape();
+    return static_cast<int>(shape);
 }
 
 JNIEXPORT void JNICALL

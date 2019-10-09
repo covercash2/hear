@@ -23,6 +23,7 @@ class NativeAudio {
     private external fun getFrequencyNative(): Float
     private external fun setLevelNative(level: Float)
     private external fun getLevelNative(): Float
+    private external fun getWaveShapeNative(): Int
     private external fun setWaveShapeNative(i: Int)
 
     private external fun constFrequencyMin(): Float
@@ -53,9 +54,11 @@ class NativeAudio {
             toggleToneNative(value)
         }
 
-    fun setWaveShape(shape: WaveShape) {
-        setWaveShapeNative(shape.i)
-    }
+    var waveShape: WaveShape
+        get() = WaveShape.values()[getWaveShapeNative()]
+        set(value) {
+            setWaveShapeNative(value.i)
+        }
 
     fun startEngine() {
         return startEngineNative()

@@ -10,18 +10,22 @@
 
 class AudioEngine {
 public:
+    AudioEngine(Oscillator *oscillator);
+    ~AudioEngine();
+
     bool start();
     void stop();
     void restart();
 
     Oscillator* getOscillator();
 
-    void setFrequency(float freq);
     void setToneOn(bool isToneOn);
 
+    int32_t sample_rate_ = 0;
+
 private:
-    Oscillator oscillator_;
-    AAudioStream *stream_;
+    Oscillator *oscillator_ = nullptr;
+    AAudioStream *stream_ = nullptr;
 };
 
 
