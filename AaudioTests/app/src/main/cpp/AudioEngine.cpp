@@ -17,8 +17,18 @@ dataCallback(
         int32_t numFrames) {
 
     auto engine = static_cast<AudioEngine *>(userData);
+    auto data = static_cast<float *>(audioData);
 
-    engine->getOscillator()->render(static_cast<float *>(audioData), numFrames);
+    engine->getOscillator()->render(data, numFrames);
+
+    // TODO implement filters
+//    int32_t sample_rate = AAudioStream_getSampleRate(stream);
+//    int32_t samples_per_frame = AAudioStream_getSamplesPerFrame(stream);
+//    int32_t sample_num = samples_per_frame * numFrames;
+//    float dt = (float)sample_num / (float)sample_rate;
+//    float rc = engine->filter_->rc_;
+//
+//    engine->filter_->apply(data, numFrames, dt);
 
     return AAUDIO_CALLBACK_RESULT_CONTINUE;
 }
@@ -37,9 +47,12 @@ void errorCallback(
 
 AudioEngine::AudioEngine(Oscillator *oscillator) {
     oscillator_ = oscillator;
+    filter_ = new Filter();
+    filter_->rc = 1.0;
 }
 AudioEngine::~AudioEngine() {
     delete oscillator_;
+    delete filter_;
 }
 
 bool AudioEngine::start() {

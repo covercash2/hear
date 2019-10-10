@@ -23,6 +23,8 @@ class NativeAudio {
     private external fun getFrequencyNative(): Float
     private external fun setLevelNative(level: Float)
     private external fun getLevelNative(): Float
+    private external fun getRcNative(): Float
+    private external fun setRcNative(rc: Float)
     private external fun getWaveShapeNative(): Int
     private external fun setWaveShapeNative(i: Int)
 
@@ -35,6 +37,9 @@ class NativeAudio {
     val frequencyMax = constFrequencyMax()
     val levelMin = constLevelMin()
     val levelMax = constLevelMax()
+    var rc: Float
+        get() = getRcNative()
+        set(value) { setRcNative(value) }
 
     var frequency: Float
         get() {

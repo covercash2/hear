@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import dev.covercash.aaudiotests.audio.AudioEngineModel
+import dev.covercash.aaudiotests.audio.filter.FilterFragment
 import dev.covercash.aaudiotests.audio.oscillator.OscillatorFragment
 import dev.covercash.aaudiotests.jni.NativeAudio
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupFilter() {
-
+        setMainFragment(FilterFragment())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -7,6 +7,7 @@
 
 #include <aaudio/AAudio.h>
 #include "Oscillator.h"
+#include "Filter.h"
 
 class AudioEngine {
 public:
@@ -22,6 +23,8 @@ public:
     void setToneOn(bool isToneOn);
 
     int32_t sample_rate_ = 0;
+
+    Filter *filter_ = nullptr;
 
 private:
     Oscillator *oscillator_ = nullptr;

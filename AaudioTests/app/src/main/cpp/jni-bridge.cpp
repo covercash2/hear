@@ -72,6 +72,21 @@ Java_dev_covercash_aaudiotests_jni_NativeAudio_toggleToneNative(
     audioEngine->setToneOn(isOn);
 }
 
+JNIEXPORT float JNICALL
+Java_dev_covercash_aaudiotests_jni_NativeAudio_getRcNative(
+        JNIEnv *env,
+        jobject obj) {
+    return audioEngine->filter_->rc;
+}
+
+JNIEXPORT void JNICALL
+Java_dev_covercash_aaudiotests_jni_NativeAudio_setRcNative(
+        JNIEnv *env,
+        jobject obj,
+        jfloat rc) {
+    audioEngine->filter_->rc = rc;
+}
+
 JNIEXPORT int JNICALL
 Java_dev_covercash_aaudiotests_jni_NativeAudio_getWaveShapeNative(
         JNIEnv *env,

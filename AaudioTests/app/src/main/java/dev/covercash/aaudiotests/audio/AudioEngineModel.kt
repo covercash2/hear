@@ -30,6 +30,9 @@ class AudioEngineModel : ViewModel() {
         // TODO initialize value here?
         MutableLiveData<Float>()
     }
+    private val rcData: MutableLiveData<Float> by lazy {
+        MutableLiveData<Float>()
+    }
     private val waveShapeData: MutableLiveData<WaveShape> by lazy {
         MutableLiveData<WaveShape>()
     }
@@ -53,6 +56,13 @@ class AudioEngineModel : ViewModel() {
         set(value) {
             engine.level = value
             levelData.value = value
+        }
+
+    var rc: Float
+        get() = engine.rc
+        set(value) {
+            engine.rc = value
+            rcData.value = value
         }
 
     var waveShape: WaveShape
