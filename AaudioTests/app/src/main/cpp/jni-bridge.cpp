@@ -76,7 +76,7 @@ JNIEXPORT float JNICALL
 Java_dev_covercash_aaudiotests_jni_NativeAudio_getRcNative(
         JNIEnv *env,
         jobject obj) {
-    return audioEngine->filter_->rc;
+    return audioEngine->filter_->rc_;
 }
 
 JNIEXPORT void JNICALL
@@ -84,7 +84,7 @@ Java_dev_covercash_aaudiotests_jni_NativeAudio_setRcNative(
         JNIEnv *env,
         jobject obj,
         jfloat rc) {
-    audioEngine->filter_->rc = rc;
+    audioEngine->filter_->rc_ = rc;
 }
 
 JNIEXPORT int JNICALL

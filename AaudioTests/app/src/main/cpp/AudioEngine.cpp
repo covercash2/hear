@@ -48,7 +48,7 @@ void errorCallback(
 AudioEngine::AudioEngine(Oscillator *oscillator) {
     oscillator_ = oscillator;
     filter_ = new Filter();
-    filter_->rc = 1.0;
+    filter_->rc_ = 1.0;
 }
 AudioEngine::~AudioEngine() {
     delete oscillator_;
