@@ -27,6 +27,12 @@ data class FloatRange(
 ): Range<Float> {
     override val increment = (max - min) / (SLIDER_MAX - SLIDER_MIN)
 
+    fun positionOf(v: Float): Int =
+        ((v - min) / increment).toInt()
+
+    fun valueOf(position: Int): Float =
+        min + position * increment
+
     override fun toSeekBarMaximum(): Int =
         ((max - min) / increment).toInt()
 }

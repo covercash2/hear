@@ -7,6 +7,8 @@ import kotlin.Result.Companion.failure
 
 const val CONFIG_ERROR = "config error"
 
+const val DECIMAL_FLOAT_FORMAT = "%.1f"
+
 fun <T> defaultTag(clazz: Class<T>): String {
     return clazz.simpleName
 }

@@ -1,5 +1,6 @@
 package dev.covercash.aaudiotests.audio.oscillator
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,15 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import dev.covercash.aaudiotests.DECIMAL_FLOAT_FORMAT
 import dev.covercash.aaudiotests.Note
 import dev.covercash.aaudiotests.R
 import dev.covercash.aaudiotests.audio.AudioEngineModel
 import dev.covercash.aaudiotests.jni.WaveShape
 import dev.covercash.aaudiotests.noteFromFrequency
 import dev.covercash.aaudiotests.view.NotePickerDialog
+import dev.covercash.aaudiotests.view.unit_slider.FloatRange
+import dev.covercash.aaudiotests.view.unit_slider.SLIDER_MAX
+import dev.covercash.aaudiotests.view.unit_slider.SLIDER_MIN
 import dev.covercash.aaudiotests.view.unit_slider.UnitDialog
 import kotlinx.android.synthetic.main.oscillator_fragment.*
 import kotlinx.android.synthetic.main.oscillator_fragment.view.*
@@ -23,6 +29,7 @@ import kotlinx.android.synthetic.main.oscillator_fragment.view.*
 class OscillatorFragment : Fragment() {
     private val TAG = this.javaClass.simpleName
 
+    @SuppressLint("SetTextI18n")
     private fun setUpViews(view: View) {
         val model = activity?.run {
             ViewModelProviders
@@ -67,14 +74,19 @@ class OscillatorFragment : Fragment() {
 
         val fragManager = fragmentManager!!
 
+        val frequencyRange = FloatRange(model.frequencyMin, model.frequencyMax)
+        val levelRange = FloatRange(0f, 1f)
+
         model.observeFrequency(this, Observer { freq ->
             Log.d(TAG, "observed new frequency: $freq")
-            frequency_slider.setValue(freq)
+            frequency_seek_bar.progress = frequencyRange.positionOf(freq)
+            frequency_value_text.text = DECIMAL_FLOAT_FORMAT.format(freq)
             setNoteName(freq)
         })
 
         model.observeLevel(this, Observer { level ->
-            level_slider.setValue(level)
+            level_seek_bar.progress = levelRange.positionOf(level)
+            level_value_text.text = DECIMAL_FLOAT_FORMAT.format(level)
         })
 
         model.observeWaveShape(this, Observer { shape ->
@@ -110,33 +122,69 @@ class OscillatorFragment : Fragment() {
             }
         }
 
-        view.frequency_slider!!.apply {
-            model.frequency = this.default
-            setValue(model.frequency)
-            onValueChangedListener = { freq ->
-                setFrequency(freq)
-            }
-            onFieldClick = {
-                UnitDialog("frequency") { dialog, s ->
-                    validateStringFrequency(s)
-                        .onSuccess { f ->
-                            setFrequency(f)
-                            dialog.dismiss()
-                        }
-                        .onFailure {
-                            Log.d(TAG, "unable to validate dialog input")
-                        }
+        view.frequency_seek_bar!!.apply {
+            progress = frequencyRange.positionOf(model.frequency)
+
+            min = SLIDER_MIN
+            max = SLIDER_MAX
+
+            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onStartTrackingTouch(seekBar: SeekBar?) { /* nothing? */ }
+                override fun onStopTrackingTouch(seekBar: SeekBar?) { /* nothing? */ }
+
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    if (fromUser) {
+                        val scaledData = frequencyRange.valueOf(progress)
+                        view.frequency_value_text.text = DECIMAL_FLOAT_FORMAT.format(scaledData)
+                        model.frequency = scaledData
+                    }
                 }
-                    .show(fragManager, "Frequency Dialog")
-            }
+            })
         }
 
-        view.level_slider!!.apply {
-            setValue(model.level)
-            onValueChangedListener = { newLevel ->
-                model.level = newLevel
+        view.frequency_value_text.setOnClickListener {
+            UnitDialog("frequency") { dialog, s ->
+                validateStringFrequency(s)
+                    .onSuccess { f ->
+                        setFrequency(f)
+                        dialog.dismiss()
+                    }
+                    .onFailure {
+                        Log.d(TAG, "unable to validate dialog input")
+                    }
             }
+                .show(fragManager, "Frequency Dialog")
         }
+
+        view.level_seek_bar!!.apply {
+
+            min = SLIDER_MIN
+            max = SLIDER_MAX
+
+            progress = levelRange.positionOf(model.level)
+            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onStartTrackingTouch(seekBar: SeekBar?) { /* nothing? */ }
+                override fun onStopTrackingTouch(seekBar: SeekBar?) { /* nothing? */ }
+
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    if (fromUser) {
+                        val scaledData = levelRange.valueOf(progress)
+                        view.level_value_text.text = DECIMAL_FLOAT_FORMAT.format(scaledData)
+                        model.level = scaledData
+                    }
+                }
+            })
+        }
+
+        view.level_value_text!!.text = DECIMAL_FLOAT_FORMAT.format(model.level)
 
         view.note_name!!.apply {
             text = noteFromFrequency(model.frequency).toString()
