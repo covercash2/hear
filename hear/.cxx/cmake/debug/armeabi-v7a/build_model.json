@@ -1,0 +1,70 @@
+{
+  "variant": {
+    "module": {
+      "rootBuildGradleFolder": "/mnt/other/code/hear/AaudioTests",
+      "sdkFolder": "/mnt/space/home/code/libs/android",
+      "isNativeCompilerSettingsCacheEnabled": false,
+      "isBuildOnlyTargetAbiEnabled": true,
+      "splitsAbiFilterSet": [],
+      "intermediatesFolder": "/mnt/other/code/hear/AaudioTests/hear/build/intermediates",
+      "gradleModulePathName": ":hear",
+      "moduleRootFolder": "/mnt/other/code/hear/AaudioTests/hear",
+      "makeFile": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/CMakeLists.txt",
+      "buildSystem": "CMAKE",
+      "compilerSettingsCacheFolder": "/mnt/other/code/hear/AaudioTests/.cxx",
+      "cxxFolder": "/mnt/other/code/hear/AaudioTests/hear/.cxx",
+      "ndkFolder": "/mnt/space/home/code/libs/android/ndk/20.0.5594570",
+      "ndkVersion": "20.0.5594570",
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "cmakeToolchainFile": "."
+    },
+    "buildSystemArgumentList": [],
+    "cFlagList": [],
+    "cppFlagsList": [],
+    "variantName": "debug",
+    "soFolder": "/mnt/other/code/hear/AaudioTests/hear/build/intermediates/cmake/debug/lib",
+    "objFolder": "/mnt/other/code/hear/AaudioTests/hear/build/intermediates/cmake/debug/obj",
+    "jsonFolder": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug",
+    "gradleBuildOutputFolder": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cxx/debug",
+    "isDebuggableEnabled": true,
+    "validAbiList": [
+      "ARMEABI_V7A",
+      "ARM64_V8A",
+      "X86",
+      "X86_64"
+    ],
+    "buildTargetSet": []
+  },
+  "abi": "ARMEABI_V7A",
+  "abiPlatformVersion": 26,
+  "cxxBuildFolder": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a",
+  "jsonFile": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a/android_gradle_build.json",
+  "gradleBuildOutputFolder": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cxx/debug/armeabi-v7a",
+  "objFolder": "/mnt/other/code/hear/AaudioTests/hear/build/intermediates/cmake/debug/obj/armeabi-v7a",
+  "buildCommandFile": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a/build_command.txt",
+  "buildOutputFile": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a/build_output.txt",
+  "modelOutputFile": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a/build_model.json",
+  "cmake": {
+    "cmakeListsWrapperFile": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cxx/debug/armeabi-v7a/CMakeLists.txt",
+    "toolchainWrapperFile": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cxx/debug/armeabi-v7a/android_gradle_build.toolchain.cmake",
+    "buildGenerationStateFile": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cxx/debug/armeabi-v7a/build_generation_state.json",
+    "cacheKeyFile": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cxx/debug/armeabi-v7a/compiler_cache_key.json",
+    "compilerCacheUseFile": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cxx/debug/armeabi-v7a/compiler_cache_use.json",
+    "compilerCacheWriteFile": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cxx/debug/armeabi-v7a/compiler_cache_write.json",
+    "toolchainSettingsFromCacheFile": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cxx/debug/armeabi-v7a/compiler_settings_cache.cmake",
+    "cmakeWrappingBaseFolder": "."
+  },
+  "jsonGenerationLoggingRecordFile": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a/json_generation_record.json",
+  "compileCommandsJsonFile": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a/compile_commands.json"
+}

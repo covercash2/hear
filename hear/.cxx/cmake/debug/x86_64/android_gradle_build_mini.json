@@ -1,0 +1,19 @@
+{
+  "buildFiles": [
+    "/mnt/space/home/code/libs/android/ndk/20.0.5594570/build/cmake/platforms.cmake",
+    "/mnt/space/home/code/libs/android/ndk/20.0.5594570/build/cmake/android.toolchain.cmake",
+    "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "/mnt/space/home/code/libs/android/cmake/3.10.2.4988404/bin/ninja -C \"/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/x86_64\" clean"
+  ],
+  "buildTargetsCommand": "/mnt/space/home/code/libs/android/cmake/3.10.2.4988404/bin/ninja -C \"/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/x86_64\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "native-lib-Debug-x86_64": {
+      "artifactName": "native-lib",
+      "buildCommand": "/mnt/space/home/code/libs/android/cmake/3.10.2.4988404/bin/ninja -C \"/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/x86_64\" native-lib",
+      "abi": "x86_64",
+      "output": "/mnt/other/code/hear/AaudioTests/hear/build/intermediates/cmake/debug/obj/x86_64/libnative-lib.so"
+    }
+  }
+}

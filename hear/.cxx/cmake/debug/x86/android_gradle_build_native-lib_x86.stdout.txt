@@ -1,0 +1,9 @@
+ninja: Entering directory `/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/x86'
+[1/8] Building CXX object CMakeFiles/native-lib.dir/Filter.cpp.o
+[2/8] Building CXX object CMakeFiles/native-lib.dir/util.cpp.o
+[3/8] Building CXX object CMakeFiles/native-lib.dir/Sampler.cpp.o
+[4/8] Building CXX object CMakeFiles/native-lib.dir/Sample.cpp.o
+[5/8] Building CXX object CMakeFiles/native-lib.dir/Oscillator.cpp.o
+[6/8] Building CXX object CMakeFiles/native-lib.dir/jni-bridge.cpp.o
+[7/8] Building CXX object CMakeFiles/native-lib.dir/AudioEngine.cpp.o
+[8/8] Linking CXX shared library /mnt/other/code/hear/AaudioTests/hear/build/intermediates/cmake/debug/obj/x86/libnative-lib.so

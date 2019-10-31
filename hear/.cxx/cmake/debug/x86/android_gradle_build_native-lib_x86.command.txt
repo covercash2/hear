@@ -1,0 +1,7 @@
+Executable : /mnt/space/home/code/libs/android/cmake/3.10.2.4988404/bin/ninja
+arguments : 
+-C
+/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/x86
+native-lib
+jvmArgs : 
+

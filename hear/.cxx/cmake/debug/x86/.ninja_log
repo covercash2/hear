@@ -1,0 +1,9 @@
+# ninja log v5
+0	218	1572475927	CMakeFiles/native-lib.dir/Filter.cpp.o	4ebffca43ed749ed
+13	565	1572475928	CMakeFiles/native-lib.dir/util.cpp.o	5b950a8fd8082765
+12	596	1572475928	CMakeFiles/native-lib.dir/Sampler.cpp.o	bd311589c9715647
+12	610	1572475928	CMakeFiles/native-lib.dir/Sample.cpp.o	38a71c6298c55d4
+10	765	1572475928	CMakeFiles/native-lib.dir/Oscillator.cpp.o	47c15c6b8bedf255
+0	841	1572475928	CMakeFiles/native-lib.dir/jni-bridge.cpp.o	c0fba08dc62d802f
+9	1158	1572475928	CMakeFiles/native-lib.dir/AudioEngine.cpp.o	7b3e093f0f7456de
+1158	1359	1572475928	/mnt/other/code/hear/AaudioTests/hear/build/intermediates/cmake/debug/obj/x86/libnative-lib.so	c329d3bfbf05405d

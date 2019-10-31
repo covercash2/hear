@@ -1,0 +1,4 @@
+rootProject.name='Hear'
+include ':app'
+include ':hearlib'
+include ':toolbox'

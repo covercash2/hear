@@ -1,0 +1,3 @@
+/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/x86/CMakeFiles/rebuild_cache.dir
+/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/x86/CMakeFiles/edit_cache.dir
+/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/x86/CMakeFiles/native-lib.dir

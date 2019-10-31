@@ -1,0 +1,72 @@
+{
+  "stringTable": {
+    "0": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/x86",
+    "1": "--target=i686-none-linux-android26 --gcc-toolchain=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/sysroot -Dnative_lib_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIC"
+  },
+  "buildFiles": [
+    "/mnt/space/home/code/libs/android/ndk/20.0.5594570/build/cmake/platforms.cmake",
+    "/mnt/space/home/code/libs/android/ndk/20.0.5594570/build/cmake/android.toolchain.cmake",
+    "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "/mnt/space/home/code/libs/android/cmake/3.10.2.4988404/bin/ninja -C \"/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/x86\" clean"
+  ],
+  "buildTargetsCommand": "/mnt/space/home/code/libs/android/cmake/3.10.2.4988404/bin/ninja -C \"/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/x86\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "native-lib-Debug-x86": {
+      "buildCommand": "/mnt/space/home/code/libs/android/cmake/3.10.2.4988404/bin/ninja -C \"/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/x86\" native-lib",
+      "buildType": "debug",
+      "toolchain": "2852048314",
+      "abi": "x86",
+      "artifactName": "native-lib",
+      "files": [
+        {
+          "src": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/jni-bridge.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/AudioEngine.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/Oscillator.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/Filter.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/Sample.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/Sampler.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/util.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [],
+      "output": "/mnt/other/code/hear/AaudioTests/hear/build/intermediates/cmake/debug/obj/x86/libnative-lib.so"
+    }
+  },
+  "toolchains": {
+    "2852048314": {
+      "cppCompilerExecutable": "/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

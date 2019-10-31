@@ -1,0 +1,43 @@
+[
+{
+  "directory": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a",
+  "command": "/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi26 --gcc-toolchain=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -march=armv7-a -mthumb -Wa,--noexecstack -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-lib.dir/jni-bridge.cpp.o -c /mnt/other/code/hear/AaudioTests/hear/src/main/cpp/jni-bridge.cpp",
+  "file": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/jni-bridge.cpp"
+},
+
+{
+  "directory": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a",
+  "command": "/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi26 --gcc-toolchain=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -march=armv7-a -mthumb -Wa,--noexecstack -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-lib.dir/AudioEngine.cpp.o -c /mnt/other/code/hear/AaudioTests/hear/src/main/cpp/AudioEngine.cpp",
+  "file": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/AudioEngine.cpp"
+},
+
+{
+  "directory": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a",
+  "command": "/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi26 --gcc-toolchain=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -march=armv7-a -mthumb -Wa,--noexecstack -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-lib.dir/Oscillator.cpp.o -c /mnt/other/code/hear/AaudioTests/hear/src/main/cpp/Oscillator.cpp",
+  "file": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/Oscillator.cpp"
+},
+
+{
+  "directory": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a",
+  "command": "/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi26 --gcc-toolchain=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -march=armv7-a -mthumb -Wa,--noexecstack -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-lib.dir/Filter.cpp.o -c /mnt/other/code/hear/AaudioTests/hear/src/main/cpp/Filter.cpp",
+  "file": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/Filter.cpp"
+},
+
+{
+  "directory": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a",
+  "command": "/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi26 --gcc-toolchain=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -march=armv7-a -mthumb -Wa,--noexecstack -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-lib.dir/Sample.cpp.o -c /mnt/other/code/hear/AaudioTests/hear/src/main/cpp/Sample.cpp",
+  "file": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/Sample.cpp"
+},
+
+{
+  "directory": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a",
+  "command": "/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi26 --gcc-toolchain=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -march=armv7-a -mthumb -Wa,--noexecstack -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-lib.dir/Sampler.cpp.o -c /mnt/other/code/hear/AaudioTests/hear/src/main/cpp/Sampler.cpp",
+  "file": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/Sampler.cpp"
+},
+
+{
+  "directory": "/mnt/other/code/hear/AaudioTests/hear/.cxx/cmake/debug/armeabi-v7a",
+  "command": "/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi26 --gcc-toolchain=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/mnt/space/home/code/libs/android/ndk/20.0.5594570/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -Dnative_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -march=armv7-a -mthumb -Wa,--noexecstack -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/native-lib.dir/util.cpp.o -c /mnt/other/code/hear/AaudioTests/hear/src/main/cpp/util.cpp",
+  "file": "/mnt/other/code/hear/AaudioTests/hear/src/main/cpp/util.cpp"
+}
+]
