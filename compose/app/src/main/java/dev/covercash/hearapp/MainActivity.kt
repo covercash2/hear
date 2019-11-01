@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     )
                     Slider(
-                        state = SliderState(.7f)
+                        state = Value(.7f)
                     ) {
                         Log.d(logTag, "new slider position: $it")
                     }

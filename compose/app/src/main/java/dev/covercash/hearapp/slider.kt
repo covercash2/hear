@@ -1,40 +1,55 @@
 package dev.covercash.hearapp
 
+import android.util.Log
 import androidx.compose.Composable
 import androidx.compose.Model
 import androidx.ui.core.*
 import androidx.ui.engine.geometry.Rect
 import androidx.ui.engine.geometry.Shape
+import androidx.ui.foundation.shape.RectangleShape
+import androidx.ui.foundation.shape.border.Border
+import androidx.ui.foundation.shape.border.DrawBorder
 import androidx.ui.graphics.Canvas
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.Paint
 import androidx.ui.layout.Container
 import androidx.ui.tooling.preview.Preview
 
+@Model
+data class Value(
+    var value: Float,
+    val min: Float = 0f,
+    val max: Float = 1f
+) {
+    var percent: Float
+        get() =
+            value.minus(min).div(max.minus(min))
+        set(newPercent) {
+            value = newPercent.times(max.minus(min)).plus(min)
+        }
+}
+
 @Preview
 @Composable
 fun SliderPreview() {
-    val state = SliderState(.7f)
+    val state = Value(.7f)
 
     Slider(state = state) { /* on change*/ }
 }
 
-@Model
-class SliderState(var percent: Float)
-
 @Composable
 fun TestSlider(
     name: String? = null,
-    state: SliderState,
+    state: Value,
     height: Dp = 16.dp,
-    onChange: ((percent: Float) -> Unit)? = null
+    onChange: ((value: Float) -> Unit)? = null
 ) {
     val logTag = "TestSlider"
 
     val inputHandler =
         SliderPointerInputHandler { percent ->
             state.percent = percent
-            onChange?.invoke(state.percent)
+            onChange?.invoke(state.value)
         }
 
     PointerInputWrapper(
@@ -42,9 +57,9 @@ fun TestSlider(
     ) {
         Container(
             height = height,
-//            expanded = true,
             alignment = Alignment.TopLeft
         ) {
+            DrawBorder(shape = RectangleShape,border = Border(Color.Red, 2.dp))
             WithConstraints { constraints ->
                 val left: Px = 0.px
                 val right: Px = constraints.maxWidth.toPx()
@@ -77,7 +92,7 @@ fun TestSlider(
 
 @Composable
 fun Slider(
-    state: SliderState,
+    state: Value,
     height: Dp = 16.dp,
     onChange: ((percent: Float) -> Unit)? = null
 ) {
@@ -123,7 +138,7 @@ fun Slider(
     }
 }
 
-fun <T: Any> T.logTag(): String = this.javaClass.simpleName
+fun <T : Any> T.logTag(): String = this.javaClass.simpleName
 
 /**
  * Calculate the percent distance between two points on a line.

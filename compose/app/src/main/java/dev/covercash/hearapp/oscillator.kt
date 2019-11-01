@@ -13,16 +13,6 @@ class OscillatorState(
     var amplitude: Float
 )
 
-class Value(
-    val value: Float,
-    private val min: Float = 0f,
-    private val max: Float = 1f
-) {
-    val percent: Float
-        get() =
-            value.minus(min).div(max.minus(min))
-}
-
 fun NativeAudio.frequencyValue(): Value =
     Value(frequency, frequencyMin, frequencyMax)
 
@@ -36,29 +26,29 @@ fun Oscillator(
     onFrequencyChanged: ((Float) -> Unit)? = null,
     onAmplitudeChanged: ((Float) -> Unit)? = null
 ) {
-    Column(Spacing(8.dp)) {
-        LabeledSlider(frequency.percent, "frequency", "Hz", onFrequencyChanged)
+    Column(Spacing(16.dp)) {
+        LabeledSlider(frequency, "frequency", "Hz", onFrequencyChanged)
 //        LabeledSlider(amplitude.percent, "amplitude", "dB", onAmplitudeChanged)
     }
 }
 
 @Composable
 fun LabeledSlider(
-    percent: Float,
+    value: Value,
     label: String,
     units: String,
     onChange: ((percent: Float) -> Unit)?
 ) {
     FlexRow {
-        this.flexible(.2f) {
+        this.inflexible {
             Text(label)
-            Text("%.2f".format(percent))
+            Text("%.2f".format(value.value))
             Text(units)
         }
-        this.expanded(.2f) {
+        this.expanded(5f) {
             TestSlider(
                 name = label,
-                state = SliderState(percent),
+                state = value,
                 onChange = onChange
             )
         }
