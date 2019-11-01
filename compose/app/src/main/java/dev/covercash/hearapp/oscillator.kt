@@ -7,12 +7,6 @@ import androidx.ui.layout.*
 import androidx.ui.tooling.preview.Preview
 import dev.covercash.hearlib.NativeAudio
 
-@Model
-class OscillatorState(
-    var frequency: Float,
-    var amplitude: Float
-)
-
 fun NativeAudio.frequencyValue(): Value =
     Value(frequency, frequencyMin, frequencyMax)
 
@@ -24,11 +18,11 @@ fun Oscillator(
     frequency: Value,
     level: Value,
     onFrequencyChanged: ((Float) -> Unit)? = null,
-    onAmplitudeChanged: ((Float) -> Unit)? = null
+    onLevelChanged: ((Float) -> Unit)? = null
 ) {
     Column(Spacing(16.dp)) {
         LabeledSlider(frequency, "frequency", "Hz", onFrequencyChanged)
-//        LabeledSlider(amplitude.percent, "amplitude", "dB", onAmplitudeChanged)
+        LabeledSlider(level, "level", "dB", onLevelChanged)
     }
 }
 
@@ -48,7 +42,6 @@ fun LabeledSlider(
             }
         }
         Slider(
-            name = label,
             state = value,
             onChange = onChange
         )

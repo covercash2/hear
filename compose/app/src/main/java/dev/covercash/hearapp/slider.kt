@@ -1,11 +1,8 @@
 package dev.covercash.hearapp
 
-import android.util.Log
 import androidx.compose.Composable
 import androidx.compose.Model
 import androidx.ui.core.*
-import androidx.ui.engine.geometry.Rect
-import androidx.ui.engine.geometry.Shape
 import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.foundation.shape.border.Border
 import androidx.ui.foundation.shape.border.DrawBorder
@@ -41,13 +38,10 @@ fun SliderPreview() {
 
 @Composable
 fun Slider(
-    name: String? = null,
     state: Value,
     height: Dp = 16.dp,
     onChange: ((value: Float) -> Unit)? = null
 ) {
-    val logTag = "TestSlider"
-
     val inputHandler =
         SliderPointerInputHandler { percent ->
             state.percent = percent
@@ -66,7 +60,6 @@ fun Slider(
 
             Draw { canvas: Canvas, parentSize ->
                 val parentRect = parentSize.toRect()
-                val n = name
                 val rect = parentRect.copy(
                     right = (parentRect.right - parentRect.left) * state.percent
                 )
