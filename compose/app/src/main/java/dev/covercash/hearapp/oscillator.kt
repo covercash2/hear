@@ -39,19 +39,19 @@ fun LabeledSlider(
     units: String,
     onChange: ((percent: Float) -> Unit)?
 ) {
-    FlexRow {
-        this.inflexible {
-            Text(label)
-            Text("%.2f".format(value.value))
-            Text(units)
+    Column {
+        FlexRow {
+            this.expanded(2f) {
+                Text(label)
+                Text("%9.1f".format(value.value))
+                Text(units)
+            }
         }
-        this.expanded(5f) {
-            TestSlider(
-                name = label,
-                state = value,
-                onChange = onChange
-            )
-        }
+        Slider(
+            name = label,
+            state = value,
+            onChange = onChange
+        )
     }
 }
 

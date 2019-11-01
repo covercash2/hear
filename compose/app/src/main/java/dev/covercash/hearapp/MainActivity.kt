@@ -31,11 +31,6 @@ class MainActivity : AppCompatActivity() {
                             nativeAudio.level = it
                         }
                     )
-                    Slider(
-                        state = Value(.7f)
-                    ) {
-                        Log.d(logTag, "new slider position: $it")
-                    }
                 }
             }
         }

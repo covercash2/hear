@@ -25,7 +25,9 @@ data class Value(
         get() =
             value.minus(min).div(max.minus(min))
         set(newPercent) {
-            value = newPercent.times(max.minus(min)).plus(min)
+            value = newPercent
+                .coerceIn(0f, 1f)
+                .times(max.minus(min)).plus(min)
         }
 }
 
@@ -38,7 +40,7 @@ fun SliderPreview() {
 }
 
 @Composable
-fun TestSlider(
+fun Slider(
     name: String? = null,
     state: Value,
     height: Dp = 16.dp,
@@ -57,82 +59,22 @@ fun TestSlider(
     ) {
         Container(
             height = height,
-            alignment = Alignment.TopLeft
-        ) {
-            DrawBorder(shape = RectangleShape,border = Border(Color.Red, 2.dp))
-            WithConstraints { constraints ->
-                val left: Px = 0.px
-                val right: Px = constraints.maxWidth.toPx()
-                val top: Px = 0.px
-                val bottom: Px = constraints.maxHeight.toPx()
-                val position: Px = right.minus(left).times(state.percent)
-
-                val n = name
-                val i = constraints.hasBoundedWidth
-                inputHandler.bounds = Pair(left, right)
-
-                Draw { canvas: Canvas, parentSize ->
-                    val parentRect = parentSize.toRect()
-                    val n = name
-                    val rect = Rect(
-                        left = left.value,
-                        top = top.value,
-                        right = position.value,
-                        bottom = bottom.value
-                    )
-                    val paint = Paint().apply {
-                        this.color = Color.Blue
-                    }
-                    canvas.drawRect(rect, paint)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun Slider(
-    state: Value,
-    height: Dp = 16.dp,
-    onChange: ((percent: Float) -> Unit)? = null
-) {
-    val logTag = "Slider"
-
-    val inputHandler =
-        SliderPointerInputHandler { percent ->
-            state.percent = percent
-            onChange?.invoke(state.percent)
-        }
-
-    PointerInputWrapper(
-        pointerInputHandler = inputHandler
-    ) {
-        Container(
-            height = height,
             expanded = true,
             alignment = Alignment.TopLeft
         ) {
-            WithConstraints { constraints ->
-                val left: Px = 0.px
-                val right: Px = constraints.maxWidth.toPx()
-                val top: Px = 0.px
-                val bottom: Px = constraints.maxHeight.toPx()
-                val position: Px = right.minus(left).times(state.percent)
+            DrawBorder(shape = RectangleShape, border = Border(Color.Red, 2.dp))
 
-                inputHandler.bounds = Pair(left, right)
-
-                Draw { canvas: Canvas, _ ->
-                    val rect = Rect(
-                        left = left.value,
-                        top = top.value,
-                        right = position.value,
-                        bottom = bottom.value
-                    )
-                    val paint = Paint().apply {
-                        this.color = Color.Blue
-                    }
-                    canvas.drawRect(rect, paint)
+            Draw { canvas: Canvas, parentSize ->
+                val parentRect = parentSize.toRect()
+                val n = name
+                val rect = parentRect.copy(
+                    right = (parentRect.right - parentRect.left) * state.percent
+                )
+                inputHandler.bounds = Pair(parentRect.left, parentRect.right)
+                val paint = Paint().apply {
+                    this.color = Color.Blue
                 }
+                canvas.drawRect(rect, paint)
             }
         }
     }
@@ -150,11 +92,14 @@ fun <T : Any> T.logTag(): String = this.javaClass.simpleName
 fun Px.percentage(min: Px, max: Px): Float =
     this.minus(min).div(max.minus(min))
 
+fun Float.percentage(min: Float, max: Float): Float =
+    this.minus(min).div(max.minus(min))
+
 class SliderPointerInputHandler(
     val onChange: (percent: Float) -> Unit
 ) : PointerInputHandler {
     // left and right
-    var bounds: Pair<Px, Px>? = null
+    var bounds: Pair<Float, Float>? = null
 
     override fun invoke(
         p1: List<PointerInputChange>,
@@ -167,7 +112,9 @@ class SliderPointerInputHandler(
             }.mapNotNull {
                 it.current.position
             }.map {
-                onChange(it.x.percentage(left, right))
+                it.x.value
+            }.map {
+                onChange(it.percentage(left, right))
             }
         }
 
