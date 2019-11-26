@@ -3,14 +3,68 @@ package dev.covercash.hearapp
 import androidx.compose.Composable
 import androidx.compose.Model
 import androidx.ui.core.*
+import androidx.ui.engine.geometry.*
+import androidx.ui.foundation.shape.DrawShape
 import androidx.ui.foundation.shape.RectangleShape
 import androidx.ui.foundation.shape.border.Border
 import androidx.ui.foundation.shape.border.DrawBorder
-import androidx.ui.graphics.Canvas
-import androidx.ui.graphics.Color
-import androidx.ui.graphics.Paint
+import androidx.ui.foundation.shape.corner.CircleShape
+import androidx.ui.graphics.*
 import androidx.ui.layout.Container
 import androidx.ui.tooling.preview.Preview
+
+@Composable
+fun Slider(
+    state: Value,
+    height: Dp = 24.dp,
+    paint: Paint = Paint().apply { color = Color.Blue },
+    onChange: ((value: Float) -> Unit)? = null
+) {
+    val input =
+        SliderPointerInputHandler { percent ->
+            state.percent = percent
+            onChange?.invoke(state.value)
+        }
+
+    PointerInputWrapper(
+        pointerInputHandler = input
+    ) {
+        Container(
+            height = height,
+            expanded = true,
+            alignment = Alignment.TopLeft
+        ) {
+            Draw { canvas: Canvas, parentSize ->
+                val parentRect = parentSize.toRect()
+                val progressRect = parentRect.copy(
+                    right = (parentRect.right - parentRect.left) * state.percent
+                )
+                val progressLocation = Offset(
+                    progressRect.right,
+                    parentRect.height / 2f
+                )
+                // TODO memo?
+                input.bounds = Pair(parentRect.left, parentRect.right)
+                // TODO parameters
+                val fullLinePaint = Paint().apply {
+                    color = Color.LightGray
+                }
+
+                // draw full line
+                canvas.drawInnerLine(parentRect, fullLinePaint)
+                // draw progress line
+                canvas.drawInnerLine(progressRect, paint)
+
+                canvas.drawCircle(
+                    progressLocation,
+                    parentRect.height.times(.25f),
+                    paint
+                )
+            }
+
+        }
+    }
+}
 
 @Model
 data class Value(
@@ -27,66 +81,6 @@ data class Value(
                 .times(max.minus(min)).plus(min)
         }
 }
-
-@Preview
-@Composable
-fun SliderPreview() {
-    val state = Value(.7f)
-
-    Slider(state = state) { /* on change*/ }
-}
-
-@Composable
-fun Slider(
-    state: Value,
-    height: Dp = 16.dp,
-    onChange: ((value: Float) -> Unit)? = null
-) {
-    val inputHandler =
-        SliderPointerInputHandler { percent ->
-            state.percent = percent
-            onChange?.invoke(state.value)
-        }
-
-    PointerInputWrapper(
-        pointerInputHandler = inputHandler
-    ) {
-        Container(
-            height = height,
-            expanded = true,
-            alignment = Alignment.TopLeft
-        ) {
-            DrawBorder(shape = RectangleShape, border = Border(Color.Red, 2.dp))
-
-            Draw { canvas: Canvas, parentSize ->
-                val parentRect = parentSize.toRect()
-                val rect = parentRect.copy(
-                    right = (parentRect.right - parentRect.left) * state.percent
-                )
-                inputHandler.bounds = Pair(parentRect.left, parentRect.right)
-                val paint = Paint().apply {
-                    this.color = Color.Blue
-                }
-                canvas.drawRect(rect, paint)
-            }
-        }
-    }
-}
-
-fun <T : Any> T.logTag(): String = this.javaClass.simpleName
-
-/**
- * Calculate the percent distance between two points on a line.
- *
- * @param min the lesser value
- * @param max the greater value
- * @return the percent distance between min and max
- */
-fun Px.percentage(min: Px, max: Px): Float =
-    this.minus(min).div(max.minus(min))
-
-fun Float.percentage(min: Float, max: Float): Float =
-    this.minus(min).div(max.minus(min))
 
 class SliderPointerInputHandler(
     val onChange: (percent: Float) -> Unit
@@ -114,3 +108,37 @@ class SliderPointerInputHandler(
         return p1
     }
 }
+
+@Preview
+@Composable
+fun SliderPreview() {
+    val state = Value(.7f)
+
+    Slider(state = state) { /* on change*/ }
+}
+
+/**
+ * Draw a line through the center of a parent rectangle.
+ */
+private fun Canvas.drawInnerLine(parent: Rect, paint: Paint) {
+    val margin = parent.height * .4f
+    val rect = parent.copy(
+        top = parent.top + margin,
+        bottom = parent.bottom - margin
+    )
+    val radius = Radius.circular(90f)
+
+    drawRRect(RRect(rect, radius), paint)
+}
+
+fun <T : Any> T.logTag(): String = this.javaClass.simpleName
+
+/**
+ * Calculate the percent distance between two points on a line.
+ *
+ * @param min the lesser value
+ * @param max the greater value
+ * @return the percent distance between min and max
+ */
+fun Float.percentage(min: Float, max: Float): Float =
+    this.minus(min).div(max.minus(min))

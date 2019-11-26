@@ -2,10 +2,14 @@ package dev.covercash.hearapp
 
 import androidx.compose.Composable
 import androidx.compose.Model
+import androidx.compose.memo
+import androidx.compose.unaryPlus
 import androidx.ui.core.*
 import androidx.ui.layout.*
 import androidx.ui.tooling.preview.Preview
 import dev.covercash.hearlib.NativeAudio
+import dev.covercash.hearlib.generateAllNotes
+import dev.covercash.hearlib.noteFromFrequency
 
 fun NativeAudio.frequencyValue(): Value =
     Value(frequency, frequencyMin, frequencyMax)
@@ -21,6 +25,7 @@ fun Oscillator(
     onLevelChanged: ((Float) -> Unit)? = null
 ) {
     Column(Spacing(16.dp)) {
+        Text(noteFromFrequency(frequency.value).toString())
         LabeledSlider(frequency, "frequency", "Hz", onFrequencyChanged)
         LabeledSlider(level, "level", "dB", onLevelChanged)
     }
