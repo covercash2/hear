@@ -2,6 +2,7 @@ package dev.covercash.hearapp
 
 import androidx.compose.Composable
 import androidx.compose.Model
+import androidx.ui.Vertices
 import androidx.ui.core.*
 import androidx.ui.engine.geometry.*
 import androidx.ui.foundation.shape.DrawShape
@@ -10,6 +11,7 @@ import androidx.ui.foundation.shape.border.Border
 import androidx.ui.foundation.shape.border.DrawBorder
 import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.graphics.*
+import androidx.ui.layout.Column
 import androidx.ui.layout.Container
 import androidx.ui.tooling.preview.Preview
 
@@ -18,6 +20,11 @@ fun Slider(
     state: Value,
     height: Dp = 24.dp,
     paint: Paint = Paint().apply { color = Color.Blue },
+    backgroundPaint: Paint? = Paint().apply {
+        color = Color.LightGray
+        alpha = 150f
+    },
+    indicator: ((Canvas, Rect) -> Unit)? = null,
     onChange: ((value: Float) -> Unit)? = null
 ) {
     val input =
@@ -39,27 +46,33 @@ fun Slider(
                 val progressRect = parentRect.copy(
                     right = (parentRect.right - parentRect.left) * state.percent
                 )
-                val progressLocation = Offset(
-                    progressRect.right,
-                    parentRect.height / 2f
-                )
+                val progressX = (parentRect.right - parentRect.left) * state.percent
+                val halfHeight = parentRect.height / 2f
                 // TODO memo?
                 input.bounds = Pair(parentRect.left, parentRect.right)
                 // TODO parameters
-                val fullLinePaint = Paint().apply {
-                    color = Color.LightGray
-                }
 
                 // draw full line
-                canvas.drawInnerLine(parentRect, fullLinePaint)
+                backgroundPaint?.let {
+                    canvas.drawInnerLine(parentRect, it)
+                }
                 // draw progress line
                 canvas.drawInnerLine(progressRect, paint)
 
-                canvas.drawCircle(
-                    progressLocation,
-                    parentRect.height.times(.25f),
-                    paint
+                val indicatorBounds: Rect = parentRect.copy(
+                    left = progressX - halfHeight,
+                    right = progressX + halfHeight
                 )
+
+                when (indicator) {
+                    null -> canvas.drawOval(
+                        indicatorBounds.let {
+                            it.deflate(it.height * .25f)
+                        },
+                        paint
+                    )
+                    else -> indicator(canvas, indicatorBounds)
+                }
             }
 
         }
@@ -89,33 +102,103 @@ class SliderPointerInputHandler(
     var bounds: Pair<Float, Float>? = null
 
     override fun invoke(
-        p1: List<PointerInputChange>,
+        pointerEvents: List<PointerInputChange>,
         p2: PointerEventPass,
         p3: IntPxSize
     ): List<PointerInputChange> {
         bounds?.let { (left, right) ->
-            p1.filter {
-                it.current.down
-            }.mapNotNull {
-                it.current.position
-            }.map {
-                it.x.value
-            }.map {
-                onChange(it.percentage(left, right))
+            pointerEvents.filter { event ->
+                event.current.down
+            }.mapNotNull { event ->
+                event.current.position
+            }.map { pxPos ->
+                pxPos.x.value
+            }.map { xPos ->
+                xPos.percentage(left, right)
+            }.map { percent ->
+                onChange(percent)
             }
         }
 
-        return p1
+        return pointerEvents
     }
 }
 
 @Preview
 @Composable
 fun SliderPreview() {
-    val state = Value(.7f)
+    val state0 = Value(.7f)
+    val state1 = Value(.4f)
+    val state2 = Value(.6f)
+    val state3 = Value(0.5f)
+    val state4 = Value(0.8f)
+    val state5 = Value(0.3f)
 
-    Slider(state = state) { /* on change*/ }
+    val slider2Paint = colorPaint(Color.Green)
+    val slider3Paint = colorPaint(Color.Cyan)
+    val slider4Paint = colorPaint(Color.Magenta)
+    val slider5Paint = colorPaint(Color.Black)
+
+    Column {
+        Slider(state = state0)
+        Slider(
+            state = state1,
+            paint = colorPaint(Color.Red),
+            backgroundPaint = colorPaint(Color.Black)
+        )
+        Slider(
+            state = state2,
+            paint = slider2Paint,
+            indicator = { canvas, bounds ->
+                canvas.drawRect(bounds, slider2Paint)
+            }
+        )
+        Slider(
+            state = state3,
+            paint = slider3Paint,
+            backgroundPaint = null,
+            indicator = { canvas, bounds ->
+                canvas.drawDoubleRoundRect(
+                    RRect(bounds, Radius.circular(3f)),
+                    RRect(bounds.deflate(8f), Radius.circular(3f)),
+                    Paint().apply { color = Color.White }
+                )
+            }
+        )
+        Slider(
+            state = state4,
+            paint = slider4Paint,
+            backgroundPaint = Paint().apply {
+                style = PaintingStyle.stroke
+            },
+            indicator = { canvas, bounds ->
+                canvas.drawRRect(
+                    RRect(
+                        bounds.copy(
+                            left = bounds.getCenter().dx - 8f,
+                            right = bounds.getCenter().dx + 8f
+                        ),
+                        radius = Radius.circular(3f)
+                    ),
+                    Paint().apply { color = Color.Yellow }
+                )
+                canvas.drawLine(
+                    bounds.getTopCenter(),
+                    bounds.getBottomCenter(),
+                    Paint().apply { color = Color.Yellow }
+                )
+            }
+        )
+        Slider(
+            state = state5,
+            paint = slider5Paint,
+            indicator = { _, _ -> }
+        )
+    }
 }
+
+private fun colorPaint(color: Color) = Paint()
+    .also { it.color = color }
 
 /**
  * Draw a line through the center of a parent rectangle.
