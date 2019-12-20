@@ -4,7 +4,7 @@
 #include <jni.h>
 #include <string>
 
-static auto audioEngine = new AudioEngine(new Oscillator(FREQUENCY_A, 0.0, WaveShape::kSine));
+static auto audioEngine = new AudioEngine();
 
 extern "C" {
 
@@ -33,42 +33,63 @@ Java_dev_covercash_hearlib_NativeAudio_constLevelMax(
     return LEVEL_MAX;
 }
 
-JNIEXPORT void JNICALL
-Java_dev_covercash_hearlib_NativeAudio_setLevelNative(
+JNIEXPORT int JNICALL
+Java_dev_covercash_hearlib_NativeAudio_createOscillator(
         JNIEnv *env,
         jobject obj,
+        jfloat freq,
+        jfloat level,
+        jint waveShape) {
+    return audioEngine->createOscillator(freq, level, WaveShape(waveShape));
+}
+
+JNIEXPORT void JNICALL
+Java_dev_covercash_hearlib_NativeAudio_setOscillatorLevel(
+        JNIEnv *env,
+        jobject obj,
+        jint id,
         jfloat level) {
-    audioEngine->getOscillator()->setLevel(level);
+    audioEngine->getOscillator(id)->setLevel(level);
 }
 
 JNIEXPORT float JNICALL
-Java_dev_covercash_hearlib_NativeAudio_getLevelNative(
-        JNIEnv *env,
-        jobject obj) {
-    return audioEngine->getOscillator()->getLevel();
-}
-
-JNIEXPORT void JNICALL
-Java_dev_covercash_hearlib_NativeAudio_setFrequencyNative(
+Java_dev_covercash_hearlib_NativeAudio_getOscillatorLevel(
         JNIEnv *env,
         jobject obj,
-        jfloat freq) {
-    audioEngine->getOscillator()->setFrequency(freq, audioEngine->sample_rate_);
+        jint id) {
+    return audioEngine->getOscillator(id)->getLevel();
 }
 
 JNIEXPORT float JNICALL
-Java_dev_covercash_hearlib_NativeAudio_getFrequencyNative(
+Java_dev_covercash_hearlib_NativeAudio_getOscillatorFrequency(
         JNIEnv *env,
-        jobject obj) {
-    return audioEngine->getOscillator()->getFrequency();
+        jobject obj,
+        jint id) {
+    return audioEngine->getOscillator(id)->getFrequency();
 }
 
 JNIEXPORT void JNICALL
-Java_dev_covercash_hearlib_NativeAudio_toggleToneNative(
+Java_dev_covercash_hearlib_NativeAudio_setOscillatorFrequency(
+        JNIEnv *env,
+        jobject obj,
+        jint id,
+        jfloat freq) {
+    audioEngine->getOscillator(id)->setFrequency(freq, audioEngine->sample_rate_);
+}
+
+JNIEXPORT jboolean JNICALL
+Java_dev_covercash_hearlib_NativeAudio_isMasterPlaying(
+        JNIEnv *env,
+        jobject obj) {
+    return static_cast<jboolean>(audioEngine->isMasterPlaying());
+}
+
+JNIEXPORT void JNICALL
+Java_dev_covercash_hearlib_NativeAudio_setMasterPlaying(
         JNIEnv *env,
         jobject obj,
         jboolean isOn) {
-    audioEngine->setToneOn(isOn);
+    audioEngine->setMasterPlaying(isOn);
 }
 
 JNIEXPORT float JNICALL
@@ -87,28 +108,39 @@ Java_dev_covercash_hearlib_NativeAudio_setRcNative(
 }
 
 JNIEXPORT int JNICALL
-Java_dev_covercash_hearlib_NativeAudio_getWaveShapeNative(
+Java_dev_covercash_hearlib_NativeAudio_getOscillatorWaveShape(
         JNIEnv *env,
-        jobject obj) {
-    WaveShape shape = audioEngine->getOscillator()->getWaveShape();
+        jobject obj,
+        jint id) {
+    WaveShape shape = audioEngine->getOscillator(id)->getWaveShape();
     return static_cast<int>(shape);
 }
 
 JNIEXPORT void JNICALL
-Java_dev_covercash_hearlib_NativeAudio_setWaveShapeNative(
+Java_dev_covercash_hearlib_NativeAudio_setOscillatorWaveShape(
         JNIEnv *env,
         jobject obj,
+        jint id,
         jint waveIndex) {
-    audioEngine->getOscillator()->setWaveShape(WaveShape(waveIndex));
+    audioEngine->getOscillator(id)->setWaveShape(WaveShape(waveIndex));
 }
 
 JNIEXPORT jboolean JNICALL
-Java_dev_covercash_hearlib_NativeAudio_isPlayingNative(
+Java_dev_covercash_hearlib_NativeAudio_isOscillatorPlaying(
         JNIEnv *env,
-        jobject obj) {
-    return static_cast<jboolean>(audioEngine->getOscillator()->isWaveOn());
+        jobject obj,
+        jint id) {
+    return static_cast<jboolean>(audioEngine->getOscillator(id)->isWaveOn());
 }
 
+JNIEXPORT void JNICALL
+Java_dev_covercash_hearlib_NativeAudio_setOscillatorPlaying(
+        JNIEnv *env,
+        jobject obj,
+        jint id,
+        jboolean b) {
+    audioEngine->getOscillator(id)->setWaveOn(b);
+}
 
 JNIEXPORT void JNICALL
 Java_dev_covercash_hearlib_NativeAudio_startEngineNative(

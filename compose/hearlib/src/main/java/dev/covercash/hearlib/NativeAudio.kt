@@ -1,73 +1,53 @@
 package dev.covercash.hearlib
 
 import android.util.Log
-
-// 'i' represents an index in the corresponding C++ enum
-enum class WaveShape(val i: Int) {
-    SAW(0),
-    SINE(1),
-    SQUARE(2),
-    TRIANGLE(3),
-}
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 class NativeAudio {
-    private external fun isPlayingNative(): Boolean
-    private external fun toggleToneNative(isOn: Boolean)
-    private external fun startEngineNative()
-    private external fun stopEngineNative()
-    private external fun setFrequencyNative(freq: Float)
-    private external fun getFrequencyNative(): Float
-    private external fun setLevelNative(level: Float)
-    private external fun getLevelNative(): Float
-    private external fun getRcNative(): Float
-    private external fun setRcNative(rc: Float)
-    private external fun getWaveShapeNative(): Int
-    private external fun setWaveShapeNative(i: Int)
+    external fun isMasterPlaying(): Boolean
+    external fun setMasterPlaying(isOn: Boolean)
+    external fun startEngineNative()
+    external fun stopEngineNative()
 
-    private external fun constFrequencyMin(): Float
-    private external fun constFrequencyMax(): Float
-    private external fun constLevelMin(): Float
-    private external fun constLevelMax(): Float
+    external fun constFrequencyMin(): Float
+    external fun constFrequencyMax(): Float
+    external fun constLevelMin(): Float
+    external fun constLevelMax(): Float
+
+    // Oscillator
+
+    // returns the total number of oscillators
+    external fun createOscillator(
+        freq: Float, level: Float, waveShape: Int
+    ): Int
+
+    external fun isOscillatorPlaying(id: Int): Boolean
+    external fun setOscillatorPlaying(id: Int, b: Boolean)
+
+    external fun getOscillatorFrequency(id: Int): Float
+    external fun setOscillatorFrequency(id: Int, value: Float)
+
+    external fun getOscillatorLevel(id: Int): Float
+    external fun setOscillatorLevel(id: Int, level: Float)
+
+    external fun getOscillatorWaveShape(id: Int): Int
+    external fun setOscillatorWaveShape(id: Int, i: Int)
+    // end Oscillator
+
+    external fun getRcNative(): Float
+    external fun setRcNative(rc: Float)
 
     val frequencyMin = constFrequencyMin()
     val frequencyMax = constFrequencyMax()
     val levelMin = constLevelMin()
     val levelMax = constLevelMax()
+
     var rc: Float
         get() = getRcNative()
-        set(value) { setRcNative(value) }
-
-    var frequency: Float
-        get() {
-            return getFrequencyNative()
-        }
         set(value) {
-            setFrequencyNative(value)
+            setRcNative(value)
         }
-
-    var level: Float
-        get() = getLevelNative()
-        set(value) = setLevelNative(value)
-
-    var playing: Boolean
-        get() = isPlayingNative()
-        set(value) {
-            toggleToneNative(value)
-        }
-
-    var waveShape: WaveShape
-        get() = WaveShape.values()[getWaveShapeNative()]
-        set(value) {
-            setWaveShapeNative(value.i)
-        }
-
-    fun startEngine() {
-        return startEngineNative()
-    }
-
-    fun stopEngine() {
-        return stopEngineNative()
-    }
 
     companion object {
         init {

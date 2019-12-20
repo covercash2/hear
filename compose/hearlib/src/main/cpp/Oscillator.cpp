@@ -58,6 +58,12 @@ Oscillator::Oscillator(float freq, float level, WaveShape shape) {
     setWaveShape(shape);
 }
 
+Oscillator::Oscillator(const Oscillator& other) {
+    frequency_ = other.frequency_;
+    level_ = other.level_;
+    setWaveShape(other.getWaveShape());
+}
+
 void Oscillator::setFrequency(const float freq, const int32_t sample_rate) {
     float new_freq = validate(freq, FREQUENCY_MIN, FREQUENCY_MAX);
 
@@ -65,7 +71,7 @@ void Oscillator::setFrequency(const float freq, const int32_t sample_rate) {
     phase_increment_ = (kTao * new_freq) / (double) sample_rate;
 }
 
-WaveShape Oscillator::getWaveShape() {
+const WaveShape Oscillator::getWaveShape() const {
     return wave_shape_;
 }
 
@@ -117,14 +123,14 @@ void Oscillator::render(float *audioData, int32_t numFrames) {
     for (int i = 0; i < numFrames; i++) {
         if (isWaveOn_.load()) {
             // calculate next sample value
-            audioData[i] = wave_function_(phase_, level_);
+            audioData[i] += wave_function_(phase_, level_);
 
             // increment phase
             phase_ += phase_increment_;
             if (phase_ > kTao) phase_ -= kTao;
         } else {
             // silence
-            audioData[i] = 0;
+//            audioData[i] = 0;
         }
     }
 }

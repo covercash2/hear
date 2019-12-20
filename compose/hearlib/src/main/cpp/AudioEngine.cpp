@@ -16,12 +16,17 @@ dataCallback(
         AAudioStream *stream,
         void *userData,
         void *audioData,
-        int32_t numFrames) {
+        int32_t numFrames
+) {
 
     auto engine = static_cast<AudioEngine *>(userData);
     auto data = static_cast<float *>(audioData);
 
-    engine->getOscillator()->render(data, numFrames);
+    if (engine->isMasterPlaying()) {
+        for (auto oscillator : engine->oscillators()) {
+            oscillator.render(data, numFrames);
+        }
+    }
 
     // TODO implement filters
 //    int32_t sample_rate = AAudioStream_getSampleRate(stream);
@@ -47,14 +52,29 @@ void errorCallback(
     }
 }
 
-AudioEngine::AudioEngine(Oscillator *oscillator) {
-    oscillator_ = oscillator;
+AudioEngine::AudioEngine() {
     filter_ = new Filter();
     filter_->rc_ = 1.0;
 }
+
 AudioEngine::~AudioEngine() {
     delete oscillator_;
     delete filter_;
+}
+
+// returns the index of the created oscillator
+unsigned const int AudioEngine::createOscillator(float freq, float level, WaveShape shape) {
+    Oscillator new_oscillator(freq, level, shape);
+    oscillators_.emplace_back(new_oscillator);
+    return oscillators_.size();
+}
+
+Oscillator* AudioEngine::getOscillator(int id) {
+    return &oscillators_[id];
+}
+
+std::vector<Oscillator>& AudioEngine::oscillators() {
+    return oscillators_;
 }
 
 bool AudioEngine::start() {
@@ -62,7 +82,8 @@ bool AudioEngine::start() {
 
     AAudioStreamBuilder_setFormat(streamBuilder.get(), AAUDIO_FORMAT_PCM_FLOAT);
     AAudioStreamBuilder_setChannelCount(streamBuilder.get(), 1);
-    AAudioStreamBuilder_setPerformanceMode(streamBuilder.get(), AAUDIO_PERFORMANCE_MODE_LOW_LATENCY);
+    AAudioStreamBuilder_setPerformanceMode(streamBuilder.get(),
+                                           AAUDIO_PERFORMANCE_MODE_LOW_LATENCY);
     AAudioStreamBuilder_setDataCallback(streamBuilder.get(), ::dataCallback, this);
     AAudioStreamBuilder_setErrorCallback(streamBuilder.get(), ::errorCallback, this);
 
@@ -111,10 +132,10 @@ void AudioEngine::stop() {
     }
 }
 
-void AudioEngine::setToneOn(bool isToneOn) {
-    oscillator_->setWaveOn(isToneOn);
+bool AudioEngine::isMasterPlaying() {
+    return master_playing_;
 }
 
-Oscillator *AudioEngine::getOscillator() {
-    return oscillator_;
+void AudioEngine::setMasterPlaying(bool isToneOn) {
+    master_playing_ = isToneOn;
 }

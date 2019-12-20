@@ -14,8 +14,6 @@ val A4 = Note(
 // constants taken from https://pages.mtu.edu/~suits/NoteFreqCalcs.html
 const val freq0 = 16.352597831287414 // C0
 
-inline class Frequency(val freq: Float)
-
 fun Frequency.toNote(): Note = noteFromFrequency(this.freq)
 
 fun generateAllNotes(): Sequence<Note> =

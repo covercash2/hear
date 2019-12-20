@@ -35,15 +35,19 @@ enum WaveShape {
 class Oscillator {
 public:
     Oscillator(float frequency, float level, WaveShape waveShape);
+    Oscillator(const Oscillator& other);
 
     void setFrequency(float freq, int32_t sample_rate);
     float getFrequency();
+
     void setLevel(float freq);
     float getLevel();
+
     void setWaveOn(bool isWaveOn);
     bool isWaveOn();
     void setWaveShape(WaveShape shape);
-    WaveShape getWaveShape();
+    const WaveShape getWaveShape() const;
+
     void render(float *audioData, int32_t numFrames);
 
 private:
